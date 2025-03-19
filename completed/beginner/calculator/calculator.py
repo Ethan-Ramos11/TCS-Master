@@ -53,7 +53,22 @@ def main():
     """
     Main function to run the calculator program.
     """
-    pass
+    print("Welcome to the arithmetic calculator!")
+    while True:
+        try:
+            num1, num2, operation = get_user_input()
+            result = calculate(num1, num2, operation)
+            print(f"{num1} {operation} {num2} = {result}")
+            if input("\nCalculate again? (y/n): ").lower() != 'y':
+                break
+        except ValueError as e:
+            print(f"Error: {e}")
+        except ZeroDivisionError as e:
+            print(f"Error: {e}")
+        except KeyboardInterrupt:
+            print("\nCalculator terminated by user")
+            break
+    print("Thank you for using the arithmetic calculator!")
 
 
 if __name__ == "__main__":
