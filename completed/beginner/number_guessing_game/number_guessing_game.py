@@ -39,10 +39,15 @@ def check_guess(guess, secret_number):
     Returns:
         bool: True if guess is correct, False otherwise
     """
-    # TODO: Compare guess with secret number
-    # TODO: Print appropriate feedback (too high, too low, correct)
-    # TODO: Return True if guess is correct, False otherwise
-    pass
+    if guess == secret_number:
+        print("Congratulations! You guessed the correct number!")
+        return True
+    elif guess < secret_number:
+        print("Your guess is too low")
+        return False
+    else:
+        print("Your guess is too high")
+        return False
 
 
 def main():
