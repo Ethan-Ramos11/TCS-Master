@@ -58,20 +58,6 @@ def display_stats(stats):
     pass
 
 
-def play_round(stats):
-    """
-    Play one round of the game.
-
-    Args:
-        stats (dict): Current game statistics
-
-    Returns:
-        bool: True if player wants to play again, False otherwise
-    """
-    # TODO: Implement round logic
-    pass
-
-
 def main():
     """
     Main function to run the game.

@@ -53,8 +53,7 @@ def update_stats(stats, result):
         stats (dict): Current game statistics
         result (str): Round result ('player', 'computer', or 'tie')
     """
-    # TODO: Implement statistics update
-    pass
+    stats[result] += 1
 
 
 def display_stats(stats):
@@ -64,22 +63,8 @@ def display_stats(stats):
     Args:
         stats (dict): Current game statistics
     """
-    # TODO: Implement statistics display
-    pass
-
-
-def play_round(stats):
-    """
-    Play one round of the game.
-
-    Args:
-        stats (dict): Current game statistics
-
-    Returns:
-        bool: True if player wants to play again, False otherwise
-    """
-    # TODO: Implement round logic
-    pass
+    print(
+        f"Wins: {stats["player"]}, Losses: {stats["computer"]}, Draws: {stats["tie"]}")
 
 
 def main():
@@ -87,9 +72,41 @@ def main():
     Main function to run the game.
     Handles the game loop and player interaction.
     """
-    # TODO: Initialize statistics
-    # TODO: Implement main game loop
-    pass
+    stats = {"player": 0,
+             "computer": 0,
+             "tie": 0}
+    print("\nWelcome to Rock, Paper, Scissors!")
+    print("Enter your choice: 'r', 'p', or 's'")
+    print("Type 'quit' at any time to exit the game\n")
+
+    while True:
+        player_choice = get_player_choice()
+        computer_choice = get_computer_choice()
+
+        print(f"You chose: {player_choice}")
+        print(f"The computer chose: {computer_choice}")
+
+        result = determine_winner(player_choice, computer_choice)
+        update_stats(stats, result)
+
+        if result == "tie":
+            print("It was a draw")
+        elif result == "computer":
+            print("The computer won. Better luck next time.")
+        else:
+            print("Nice you won!")
+        display_stats(stats)
+
+        play_again = input("Would you like to play again? (y/n): ").lower()
+        if play_again != "y":
+            break
+
+    print("\n=== Final Game Summary ===")
+    print(f"Total games played: {sum(stats.values())}")
+    print(f"Wins: {stats['player']}")
+    print(f"Losses: {stats['computer']}")
+    print(f"Draws: {stats['tie']}")
+    print("\nThanks for playing! Goodbye!")
 
 
 if __name__ == "__main__":
