@@ -18,7 +18,14 @@ def get_user_guess():
     Returns:
         int: The user's guess
     """
-    pass
+    while True:
+        try:
+            guess = int(input("Enter your guess (1-100): "))
+            if guess in range(1, 101):
+                return guess
+            print("Your guess is out of the range, try again.")
+        except ValueError:
+            print("Please enter a valid integer")
 
 
 def check_guess(guess, secret_number):
