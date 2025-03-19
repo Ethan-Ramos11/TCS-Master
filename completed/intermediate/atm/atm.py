@@ -6,7 +6,7 @@ class ATM:
         self.balance = 0.0
         self.transaction_history = []
         self.is_logged_in = False
-        self.pin = "1234"  # Default PIN for testing
+        self.pin = "1234"
 
     def login(self, pin):
         """
@@ -18,10 +18,12 @@ class ATM:
         Returns:
             bool: True if login successful, False otherwise
         """
-        # TODO: Implement PIN verification
-        # TODO: Set is_logged_in status
-        # TODO: Return login result
-        pass
+        if self.pin == pin:
+            self.is_logged_in = True
+            print("You are now logged in")
+            return True
+        print("Invalid pin")
+        return False
 
     def logout(self):
         """
