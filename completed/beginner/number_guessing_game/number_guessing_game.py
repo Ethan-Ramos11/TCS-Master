@@ -8,8 +8,7 @@ def generate_secret_number():
     Returns:
         int: The secret number to guess
     """
-    # TODO: Generate and return random number between 1 and 100
-    pass
+    return random.randint(1, 100)
 
 
 def get_user_guess():
@@ -19,8 +18,6 @@ def get_user_guess():
     Returns:
         int: The user's guess
     """
-    # TODO: Get and validate user input
-    # TODO: Return the guess as an integer
     pass
 
 
