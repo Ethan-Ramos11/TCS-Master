@@ -32,7 +32,7 @@ class ATM:
         Returns:
             bool: True if logout successful, False otherwise
         """
-        if self.is_logged_in == True:
+        if self.is_logged_in:
             self.is_logged_in = False
             print("You were successfully logged out")
             return True
@@ -46,9 +46,11 @@ class ATM:
         Returns:
             float: Current balance
         """
-        # TODO: Verify user is logged in
-        # TODO: Return current balance
-        pass
+        if self.is_logged_in:
+            print(f"Your balance is ${self.balance:.2f}")
+            return self.balance
+        print("Please login before you access the balance")
+        return self.balance
 
     def deposit(self, amount):
         """
