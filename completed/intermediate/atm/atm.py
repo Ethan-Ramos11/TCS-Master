@@ -32,10 +32,12 @@ class ATM:
         Returns:
             bool: True if logout successful, False otherwise
         """
-        # TODO: Implement logout logic
-        # TODO: Reset is_logged_in status
-        # TODO: Return logout result
-        pass
+        if self.is_logged_in == True:
+            self.is_logged_in = False
+            print("You were successfully logged out")
+            return True
+        print("You are not logged in")
+        return False
 
     def check_balance(self):
         """
