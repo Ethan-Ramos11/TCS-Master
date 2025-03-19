@@ -3,7 +3,7 @@ def get_player_choice():
     Get the player's choice (rock, paper, or scissors).
 
     Returns:
-        str: Player's choice ('rock', 'paper', or 'scissors')
+        str: Player's choice ('r', 'p', or 's')
     """
     # TODO: Implement player input and validation
     pass
@@ -14,7 +14,7 @@ def get_computer_choice():
     Generate the computer's choice.
 
     Returns:
-        str: Computer's choice ('rock', 'paper', or 'scissors')
+        str: Computer's choice ('r', 'p', or 's')
     """
     # TODO: Implement computer choice generation
     pass

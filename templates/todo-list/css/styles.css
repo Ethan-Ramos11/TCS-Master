@@ -1,0 +1,91 @@
+/* Reset default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  /* TODO: Set font family */
+  /* TODO: Set line height */
+  /* TODO: Set background color */
+}
+
+.container {
+  /* TODO: Set max width */
+  /* TODO: Center container */
+  /* TODO: Add padding */
+}
+
+header {
+  /* TODO: Center text */
+  /* TODO: Add margin */
+}
+
+h1 {
+  /* TODO: Set color */
+}
+
+/* TODO: Style the form */
+#todo-form {
+  /* TODO: Use flexbox for layout */
+  /* TODO: Add spacing between elements */
+  /* TODO: Add margin */
+}
+
+#todo-input {
+  /* TODO: Make input take remaining space */
+  /* TODO: Add padding */
+  /* TODO: Style border */
+  /* TODO: Add border radius */
+}
+
+button {
+  /* TODO: Add padding */
+  /* TODO: Set background color */
+  /* TODO: Set text color */
+  /* TODO: Remove border */
+  /* TODO: Add border radius */
+  /* TODO: Add cursor pointer */
+}
+
+/* TODO: Style the todo list */
+#todo-list {
+  /* TODO: Remove list bullets */
+}
+
+/* TODO: Style todo items */
+.todo-item {
+  /* TODO: Use flexbox for layout */
+  /* TODO: Add padding */
+  /* TODO: Set background color */
+  /* TODO: Add margin */
+  /* TODO: Add border radius */
+  /* TODO: Add box shadow */
+}
+
+/* TODO: Style completed items */
+.completed {
+  /* TODO: Add strikethrough */
+  /* TODO: Change text color */
+}
+
+/* TODO: Add hover effects */
+.todo-item:hover {
+  /* TODO: Add transform */
+  /* TODO: Add transition */
+}
+
+/* TODO: Style the delete button */
+.delete-btn {
+  /* TODO: Push to right side */
+  /* TODO: Set background color */
+}
+
+/* TODO: Make it responsive */
+@media (max-width: 480px) {
+  .container {
+    /* TODO: Adjust margins */
+    /* TODO: Adjust padding */
+  }
+}

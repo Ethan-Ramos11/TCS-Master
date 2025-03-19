@@ -64,7 +64,7 @@ def display_stats(stats):
         stats (dict): Current game statistics
     """
     print(
-        f"Wins: {stats['player']}, Losses: {stats['computer']}, Draws: {stats['tie']}")
+        f"Wins: {stats["player"]}, Losses: {stats["computer"]}, Draws: {stats["tie"]}")
 
 
 def main():
