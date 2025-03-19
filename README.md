@@ -6,7 +6,7 @@ This repository is a comprehensive list of projects I have worked on as an instr
 
 ```
 TCS-Master/
-├── templates/           # Empty project templates I've created for students to start with
+├── templates/          # Empty project templates I've created for students to start with
 ├── completed/          # Example completed projects I've built for reference
 ├── work-in-progress/   # Projects I'm currently developing or updating (not tracked in git)
 └── documentation/      # Project documentation, guides, and resources I've created
