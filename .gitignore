@@ -1,1 +1,49 @@
-# Python\n__pycache__/\n*.py[cod]\n*.class\n*.so\n.Python\nenv/\nbuild/\ndevelop-eggs/\ndist/\ndownloads/\neggs/\n.eggs/\nlib/\nlib64/\nparts/\nsdist/\nvar/\nwheels/\n*.egg-info/\n.installed.cfg\n*.egg\n\n# Virtual Environment\nvenv/\nENV/\n\n# IDE\n.idea/\n.vscode/\n*.swp\n*.swo\n\n# OS\n.DS_Store\n.DS_Store?\n._*\n.Spotlight-V100\n.Trashes\n\n# Database\n*.db\n*.sqlite3\n\n# Logs\n*.log\n\n# Student Work\nwork-in-progress/
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+*.log
+
+# Student Work
+work-in-progress/
