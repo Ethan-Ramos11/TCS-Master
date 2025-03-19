@@ -157,12 +157,25 @@ class ATM:
         Returns:
             bool: True if PIN change successful, False otherwise
         """
-        # TODO: Verify user is logged in
-        # TODO: Validate old PIN
-        # TODO: Validate new PIN format
-        # TODO: Update PIN
-        # TODO: Return success status
-        pass
+        if not self.is_logged_in:
+            print("Please log in first.")
+            return False
+
+        if self.pin != old_pin:
+            print("Current PIN is incorrect.")
+            return False
+
+        if not new_pin.isdigit() or len(new_pin) != 4:
+            print("Invalid new PIN format. PIN must be 4 digits.")
+            return False
+
+        if new_pin == old_pin:
+            print("New PIN must be different from current PIN.")
+            return False
+
+        self.pin = new_pin
+        print("PIN successfully updated.")
+        return True
 
 
 def main():
