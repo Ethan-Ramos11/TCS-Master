@@ -62,12 +62,16 @@ class ATM:
         Returns:
             bool: True if deposit successful, False otherwise
         """
-        # TODO: Verify user is logged in
-        # TODO: Validate amount
-        # TODO: Update balance
-        # TODO: Record transaction
-        # TODO: Return success status
-        pass
+        if self.is_logged_in:
+            if amount > 0:
+                self.balance += amount
+                self.check_balance()
+                return True
+            else:
+                print("You entered an invalid deposit amount")
+        else:
+            print("Please login before you deposit money")
+        return False
 
     def withdraw(self, amount):
         """
