@@ -141,9 +141,10 @@ class ATM:
         Returns:
             list: List of transaction records
         """
-        # TODO: Verify user is logged in
-        # TODO: Return transaction history
-        pass
+        if self.is_logged_in:
+            return self.transaction_history
+        print("Please login")
+        return None
 
     def change_pin(self, old_pin, new_pin):
         """
