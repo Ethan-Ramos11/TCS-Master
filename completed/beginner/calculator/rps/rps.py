@@ -36,8 +36,13 @@ def determine_winner(player_choice, computer_choice):
     Returns:
         str: 'player', 'computer', or 'tie'
     """
-    # TODO: Implement winner determination logic
-    pass
+    conditions = {("r", "s"), ("s", "p"), ("p", "r")}
+    if (player_choice, computer_choice) in conditions:
+        return "player"
+    elif player_choice == computer_choice:
+        return "tie"
+    else:
+        return "computer"
 
 
 def update_stats(stats, result):
