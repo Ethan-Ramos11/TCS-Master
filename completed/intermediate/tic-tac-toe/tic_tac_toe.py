@@ -4,8 +4,8 @@ class TicTacToe:
         Initialize a new Tic Tac Toe game.
         Creates an empty 3x3 board.
         """
-        # TODO: Initialize the board
-        self.winner = None
+        self.previous_result = None
+        self.results = {"X": 0, "O": 0, "Tie": 0}
         self.current_player = "X"
         self.board = ['_'] * 9
 
@@ -32,8 +32,14 @@ class TicTacToe:
         Returns:
             str: 'X' if X wins, 'O' if O wins, None if no winner
         """
-        # TODO: Implement win condition checking
-        pass
+        win_con = {(0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6),
+                   (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6)}
+        for con in win_con:
+            if self.board[con[0]] == self.board[con[1]] == self.board[con[2]] != "_":
+                self.results[self.board[con[0]]] += 1
+                self.previous_result = self.board[con[0]]
+                return self.board[con[0]]
+        return None
 
     def is_board_full(self):
         """
@@ -42,15 +48,18 @@ class TicTacToe:
         Returns:
             bool: True if board is full, False otherwise
         """
-        # TODO: Implement board full check
-        pass
+        return "_" not in self.board
 
     def display_board(self):
         """
         Display the current state of the board.
         """
-        # TODO: Implement board display
-        pass
+        s = ""
+        for idx, cell in enumerate(self.board):
+            s += f"|{cell}"
+            if idx % 3 == 2:
+                s += "|\n"
+        print(s)
 
 
 def main():
@@ -58,8 +67,6 @@ def main():
     Main function to run the game.
     Handles the game loop and player turns.
     """
-    # TODO: Implement main game loop
-    pass
 
 
 if __name__ == "__main__":
