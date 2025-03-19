@@ -54,10 +54,21 @@ def main():
     """
     Main function to run the number guessing game.
     """
-    # TODO: Display welcome message
-    # TODO: Start game loop
-    # TODO: Handle game end
-    pass
+    print("Welcome to my random number guessing game!")
+    print("The computer will randomly pick a number between 1-100")
+    print("You will enter your guess and will be told if your guess is too low or high")
+    print("The round ends when you guess the right number")
+    print("To play again type in y")
+    while True:
+        random_number = generate_secret_number()
+        guess = get_user_guess()
+
+        while not check_guess(guess, random_number):
+            guess = get_user_guess()
+        con = input("Would you like to play again? (y/n) ").lower()
+        if con != "y":
+            break
+    print("Hope you enjoyed playing goodbye!")
 
 
 if __name__ == "__main__":
