@@ -57,39 +57,44 @@ class ATM:
         Deposit money into the account.
 
         Args:
-            amount (float): Amount to deposit
+            amount (float): Amount to deposit (assumed to be validated)
 
         Returns:
             bool: True if deposit successful, False otherwise
         """
-        if self.is_logged_in:
-            if amount > 0:
-                self.balance += amount
-                self.check_balance()
-                return True
-            else:
-                print("You entered an invalid deposit amount")
-        else:
-            print("Please login before you deposit money")
-        return False
+        if not self.is_logged_in:
+            print("Please log in first.")
+            return False
+
+        self.balance += amount
+        self.transaction_history.append(f"Deposited ${amount:.2f}")
+        print(f"Deposited ${amount:.2f}. New balance: ${self.balance:.2f}")
+        return True
 
     def withdraw(self, amount):
         """
         Withdraw money from the account.
 
         Args:
-            amount (float): Amount to withdraw
+            amount (float): Amount to withdraw (assumed to be validated)
 
         Returns:
             bool: True if withdrawal successful, False otherwise
         """
-        # TODO: Verify user is logged in
-        # TODO: Validate amount
-        # TODO: Check sufficient funds
-        # TODO: Update balance
-        # TODO: Record transaction
-        # TODO: Return success status
-        pass
+        if not self.is_logged_in:
+            print("Please log in first.")
+            return False
+
+        if amount > self.balance:
+            print("Insufficient funds.")
+            return False
+        if amount < 0:
+            print("Cannot withdraw a negative amount")
+            return False
+        self.balance -= amount
+        self.transaction_history.append(f"Withdrew ${amount:.2f}")
+        print(f"Withdrew ${amount:.2f}. New balance: ${self.balance:.2f}")
+        return True
 
     def transfer(self, amount, recipient_account):
         """
@@ -97,18 +102,37 @@ class ATM:
 
         Args:
             amount (float): Amount to transfer
-            recipient_account (str): Recipient's account number
+            recipient_account (ATM): Recipient's ATM account
 
         Returns:
             bool: True if transfer successful, False otherwise
         """
-        # TODO: Verify user is logged in
-        # TODO: Validate amount
-        # TODO: Check sufficient funds
-        # TODO: Update both balances
-        # TODO: Record transaction
-        # TODO: Return success status
-        pass
+        if not self.is_logged_in:
+            print("Please log in first.")
+            return False
+
+        if not isinstance(recipient_account, ATM):
+            print("Invalid recipient account.")
+            return False
+
+        if amount <= 0:
+            print("Amount must be greater than 0.")
+            return False
+
+        if amount > self.balance:
+            print("Insufficient funds.")
+            return False
+
+        self.balance -= amount
+        recipient_account.balance += amount
+
+        self.transaction_history.append(
+            f"Transferred ${amount:.2f} to account")
+        recipient_account.transaction_history.append(
+            f"Received ${amount:.2f} transfer")
+
+        print(f"Transferred ${amount:.2f}. New balance: ${self.balance:.2f}")
+        return True
 
     def get_transaction_history(self):
         """
