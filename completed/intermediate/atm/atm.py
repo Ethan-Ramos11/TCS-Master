@@ -50,7 +50,7 @@ class ATM:
             print(f"Your balance is ${self.balance:.2f}")
             return self.balance
         print("Please login before you access the balance")
-        return None 
+        return None
 
     def deposit(self, amount):
         """
@@ -64,6 +64,9 @@ class ATM:
         """
         if not self.is_logged_in:
             print("Please log in first.")
+            return False
+        if amount <= 0:
+            print("Deposit amount must be greater than 0")
             return False
 
         self.balance += amount
