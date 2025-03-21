@@ -50,7 +50,7 @@ class ATM:
             print(f"Your balance is ${self.balance:.2f}")
             return self.balance
         print("Please login before you access the balance")
-        return self.balance
+        return None 
 
     def deposit(self, amount):
         """
@@ -178,6 +178,27 @@ class ATM:
         return True
 
 
+def get_amount(transaction):
+    """
+    Helper function used to get an amount for a transaction
+
+    Args:
+        str: The transaction the user is about to make
+
+    Returns: 
+        float: The amount for the transaction
+    """
+    while True:
+        try:
+            amount = float(input(f"Enter the amount for your {transaction}"))
+            if amount <= 0:
+                print("Enter an amount greater than 0")
+                continue
+            return amount
+        except ValueError:
+            print("Invalid entry. Please enter a proper number")
+
+
 def main():
     """
     Main function to run the ATM system.
@@ -188,7 +209,15 @@ def main():
     # TODO: Handle user input
     # TODO: Process menu options
     # TODO: Handle program exit
-    pass
+    atm = ATM()
+    print("Hello this is a fully functioning atm system written in python")
+    print("Select an operation and then enter the amount made with that operation")
+    print("To withdraw enter w, to deposit enter d, to transfer enter t, to view transactions enter view, to change pin enter change, or to quit enter q")
+    while True:
+        choice = input(
+            "To withdraw enter w, to deposit enter d, to transfer enter t, to view transactions enter view, to change pin enter change, or to quit enter q").lower()
+        if choice == "w":
+            pass
 
 
 if __name__ == "__main__":
