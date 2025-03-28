@@ -88,10 +88,21 @@ def check_guess_letter(word, guess):
             positions.append(i)
     return positions
 
+
 def check_guess_word(word, guess):
     if len(word) != len(guess):
         return False
     for i in range(len(guess)):
         if word[i] != guess[i]:
             return False
-    return True 
+    return True
+
+
+def get_user_input(word):
+    guess_word = input("Do you want to guess the whole word? (y/n): ").lower()
+    guess = input("Enter your guess: ")
+    if guess_word == "y":
+        return check_guess_letter(word, guess)
+    else:
+        return check_guess_letter(word, guess)
+    
