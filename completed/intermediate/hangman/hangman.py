@@ -81,3 +81,9 @@ def display_hangman(tries):
     print(stages[tries])
 
 
+def check_guess_letter(word, guess):
+    positions = []
+    for i in range(len(word)):
+        if word[i] == guess:
+            positions.append(i)
+    return positions
