@@ -87,3 +87,11 @@ def check_guess_letter(word, guess):
         if word[i] == guess:
             positions.append(i)
     return positions
+
+def check_guess_word(word, guess):
+    if len(word) != len(guess):
+        return False
+    for i in range(len(guess)):
+        if word[i] != guess[i]:
+            return False
+    return True 
