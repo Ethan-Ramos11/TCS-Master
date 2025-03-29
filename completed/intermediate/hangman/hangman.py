@@ -90,19 +90,26 @@ def check_guess_letter(word, guess):
 
 
 def check_guess_word(word, guess):
-    if len(word) != len(guess):
-        return False
-    for i in range(len(guess)):
-        if word[i] != guess[i]:
-            return False
-    return True
+    return word == guess.lower()
 
 
-def get_user_input(word):
-    guess_word = input("Do you want to guess the whole word? (y/n): ").lower()
-    guess = input("Enter your guess: ")
-    if guess_word == "y":
-        return check_guess_letter(word, guess)
-    else:
-        return check_guess_letter(word, guess)
-    
+def get_user_input(word, prior_letters):
+    while True:
+        check_word = input(
+            "Do you want to guess the whole word? (y/n) ").lower()
+        if check_word not in {"y", "n"}:
+            print("Invalid response, please enter y or n")
+            continue
+        guess = input("Enter your guess: ").lower()
+        if check_word == "y":
+            if len(guess) != len(word):
+                print("The length of your guess is incorrect try again")
+                continue
+        else:
+            if len(guess) != 1:
+                print("Too many letters try again")
+                continue
+            if guess in prior_letters:
+                print("You guessed this letter already")
+                continue
+        return guess, check_word
