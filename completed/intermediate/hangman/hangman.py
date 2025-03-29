@@ -1,12 +1,11 @@
 import random
-words = ["coder", "javascript", "java", "rust", "golang"]
 
 
 def pick_word(words):
     return random.choice(words)
 
 
-def display_hangman(tries):
+def display_game(tries, word, prior_letters):
     stages = [  # final state: head, torso, both arms and legs
                 """
                    --------
@@ -78,6 +77,16 @@ def display_hangman(tries):
                    -
                  """
     ]
+    w = "Word: "
+    prior = "Guessed letters: "
+    for char in word:
+        w += f"{char} "
+    for char in prior_letters:
+        prior += f"{char}, "
+    if len(prior_letters) == 0:
+        prior += "None"
+    print(w)
+    print(prior)
     print(stages[tries])
 
 
@@ -113,3 +122,9 @@ def get_user_input(word, prior_letters):
                 print("You guessed this letter already")
                 continue
         return guess, check_word
+
+
+def play():
+    words = ["coder", "javascript", "java", "rust", "golang"]
+
+    word = pick_word(words)
