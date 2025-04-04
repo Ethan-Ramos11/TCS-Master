@@ -31,6 +31,9 @@ class Index_Card:
         if not isinstance(other, Index_Card):
             return False
         return self.name == other.name and self.value == other.value
+    
+    def __hash__(self):
+        return hash((self.name, self.value))
 class index_card_set:
     def __init__(self, name: str):
         self.set_name = name
