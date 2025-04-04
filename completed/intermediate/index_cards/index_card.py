@@ -20,4 +20,10 @@ class Index_Card:
         print(f"Name successfully updated to {new_name}")
         return True
     
-     
+    def update_value(self, new_value):
+        if self.value == new_value:
+            print("Please enter a new value for the flash card")
+            return False
+        self.value = new_value
+        print(f"value successfully updated to {new_value}")
+        return True 
