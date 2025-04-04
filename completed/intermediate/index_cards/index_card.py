@@ -40,4 +40,13 @@ class index_card_set:
             print(f"Successfully added {name}")
             return True
         print("Card is already in the set")
-        return False
+        return False  
+    
+    def remove_card(self, card):
+        try: 
+            self.cards.remove(card)
+            print("Your card was successfully removed")
+            return True
+        except KeyError:
+            print("Card does not exist")
+            return False
