@@ -27,7 +27,10 @@ class Index_Card:
         print(f"value successfully updated to {new_value}")
         return True
 
-
+    def __eq__(self, other):
+        if not isinstance(other, Index_Card):
+            return False
+        return self.name == other.name and self.value == other.value
 class index_card_set:
     def __init__(self, name: str):
         self.set_name = name
@@ -57,4 +60,8 @@ class index_card_set:
         for card in self.cards:
             card.print_index_card()
             print("-" * 50)
-            
+
+
+def main():
+    print("Welcome to the index card system")
+    print("-" * 50)
