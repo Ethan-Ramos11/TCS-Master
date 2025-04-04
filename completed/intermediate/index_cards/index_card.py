@@ -31,10 +31,12 @@ class Index_Card:
         if not isinstance(other, Index_Card):
             return False
         return self.name == other.name and self.value == other.value
-    
+
     def __hash__(self):
         return hash((self.name, self.value))
-class index_card_set:
+
+
+class Index_Card_Set:
     def __init__(self, name: str):
         self.set_name = name
         self.cards = set()
@@ -68,3 +70,23 @@ class index_card_set:
 def main():
     print("Welcome to the index card system")
     print("-" * 50)
+
+    choice = input(
+        "Do you want to (1) create a new set or (2) load existing one? (1/2): ")
+
+    if choice == "1":
+        name = input("Enter the new set's name: ")
+        card_set = Index_Card_Set(name)
+        print(f"Created new set: {name}")
+    elif choice == "2":
+        filename = input("Enter the filename to load: ")
+        try:
+            card_set = Index_Card_Set.load_from_file(filename)
+        except:
+            print("Error loading file name. Creating new card set")
+            name = input("Enter the new set's name: ")
+            card_set = Index_Card_Set(name)
+            print(f"Created new set: {name}")
+    else:
+        print("Invalid choice. Creating a default set.")
+        card_set = Index_Card_Set("My Card Set")
