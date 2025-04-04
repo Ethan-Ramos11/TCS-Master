@@ -29,7 +29,7 @@ class Index_Card:
 
 
 class index_card_set:
-    def __init__(self, name):
+    def __init__(self, name: str):
         self.set_name = name
         self.cards = set()
 
@@ -40,13 +40,21 @@ class index_card_set:
             print(f"Successfully added {name}")
             return True
         print("Card is already in the set")
-        return False  
-    
-    def remove_card(self, card):
-        try: 
+        return False
+
+    def remove_card(self, card: Index_Card):
+        try:
             self.cards.remove(card)
             print("Your card was successfully removed")
             return True
         except KeyError:
             print("Card does not exist")
             return False
+
+    def display_cards(self):
+        if not self.cards:
+            print("No cards in the set")
+        for card in self.cards:
+            card.print_index_card()
+            print("-" * 50)
+            
