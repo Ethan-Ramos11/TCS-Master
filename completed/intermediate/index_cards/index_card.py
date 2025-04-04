@@ -12,3 +12,12 @@ class Index_Card:
             if input("Flip card again? (y/n) ").lower() != "y":
                 break 
     
+    def update_name(self, new_name):
+        if self.name == new_name:
+            print("Please enter a new name for the flash card")
+            return False
+        self.name = new_name
+        print(f"Name successfully updated to {new_name}")
+        return True
+    
+     
