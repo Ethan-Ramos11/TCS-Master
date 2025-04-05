@@ -50,6 +50,17 @@ class Index_Card_Set:
         print("Card is already in the set")
         return False
 
+    def add_existing_card(self, card) -> bool:
+        if not isinstance(card, Index_Card):
+            print("Must add an index card")
+            return False
+        elif not card in self.cards:
+            self.cards.add(card)
+            print(f"Successfully add {card.name}")
+            return True
+        print("Card is already in set")
+        return False
+
     def remove_card(self, card: Index_Card):
         try:
             self.cards.remove(card)
