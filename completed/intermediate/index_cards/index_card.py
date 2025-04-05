@@ -3,12 +3,30 @@ class Index_Card:
         self.name = name
         self.value = value
 
-    def print_index_card(self):
+    def display_card(self) -> None:
+        card_width = max(len(self.name), len(self.value)) + 10
+
+        def draw_card(content):
+            print("+" + "-" * card_width + "+")
+            print("|" + " " * card_width + "|")
+
+            # Center the content
+            padding = (card_width - len(content)) // 2
+            print("|" + " " * padding + content + " " *
+                  (card_width - padding - len(content)) + "|")
+
+            print("|" + " " * card_width + "|")
+            print("+" + "-" * card_width + "+")
+
         while True:
-            print(f"{self.value}")
-            input("")
-            print(f"{self.name}")
-            if input("Flip card again? (y/n) ").lower() != "y":
+            draw_card(self.name)
+            input("\nPress Enter to flip the card...")
+
+            print("\n" * 3)
+
+            draw_card(self.value)
+
+            if input("\nFlip card again? (y/n): ").lower() != "y":
                 break
 
     def update_name(self, new_name):
@@ -74,7 +92,7 @@ class Index_Card_Set:
         if not self.cards:
             print("No cards in the set")
         for card in self.cards:
-            card.print_index_card()
+            card.display_card()
             print("-" * 50)
 
 
