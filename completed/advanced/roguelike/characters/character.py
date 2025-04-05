@@ -33,6 +33,8 @@ class Character:
         """
         Return: True if still alive False otherwise
         """
+        if amount < 0:
+            return True
         if self.hp - amount <= 0:
             self.hp = 0
             self.is_alive = False
@@ -40,11 +42,18 @@ class Character:
         else:
             self.hp -= amount
             return True
-            
 
-    def heal(self, amount: int) -> None:
+    def heal(self, amount: int) -> int:
         """TODO: Restore HP up to max_hp, apply healing modifiers"""
-        pass
+        if amount < 0:
+            return 0
+        if self.hp + amount >= self.max_hp:
+            healed_amt = self.max_hp - self.hp
+            self.hp = self.max_hp
+            return healed_amt
+        else:
+            self.hp += amount
+            return amount
 
     def attack(self, target: 'Character') -> int:
         """TODO: Calculate damage based on attack stat, handle critical hits"""
