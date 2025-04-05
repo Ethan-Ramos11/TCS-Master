@@ -64,9 +64,35 @@ class Character:
         pass
 
     # Status and Progression
-    def gain_exp(self, amount: int) -> None:
-        """TODO: Add experience, handle level ups and stat increases"""
-        pass
+    def gain_exp(self, amount: int) -> bool:
+        """TODO: Add experience, handle level ups and stat increases
+        Returns True if we level up False otherwise"""
+        if amount < 0:
+            return False
+        if self.lvl >= 100:
+            return False
+        elif amount + self.exp >= self.exp_to_next_level:
+            additional_exp = (amount + self.exp) - self.exp_to_next_level
+            self.exp = additional_exp
+            self.lvl += 1
+            self.exp_to_next_level += 100
+            self.update_stats()
+            return True
+        else:
+            self.exp += amount
+            return False
+
+    def update_stats(self) -> None:
+
+        self.max_hp += 10
+        self.hp += 10 
+        self.max_mana += 5
+        self.current_mana = self.max_mana
+
+        stat_increase = (self.lvl // 2) * 3
+        self.attack += stat_increase
+        self.defense += stat_increase
+        self.speed += stat_increase
 
     def add_status_effect(self, effect: str) -> None:
         """TODO: Add status effect, handle stacking and duration"""
