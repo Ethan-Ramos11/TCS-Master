@@ -137,25 +137,68 @@ class Index_Card_Set:
 
 
 def main():
-    print("Welcome to the index card system")
+    print("Welcome to the Index Card System!")
     print("-" * 50)
 
-    choice = input(
-        "Do you want to (1) create a new set or (2) load existing one? (1/2): ")
+    while True:
+        choice = input(
+            "Do you want to (1) create a new set, (2) load existing one, or (3) exit? (1/2/3): ")
 
-    if choice == "1":
-        name = input("Enter the new set's name: ")
-        card_set = Index_Card_Set(name)
-        print(f"Created new set: {name}")
-    elif choice == "2":
-        filename = input("Enter the filename to load: ")
-        try:
-            card_set = Index_Card_Set.load_from_file(filename)
-        except:
-            print("Error loading file name. Creating new card set")
+        if choice == "1":
             name = input("Enter the new set's name: ")
             card_set = Index_Card_Set(name)
             print(f"Created new set: {name}")
-    else:
-        print("Invalid choice. Creating a default set.")
-        card_set = Index_Card_Set("My Card Set")
+            manage_card_set(card_set)
+        elif choice == "2":
+            filename = input("Enter the filename to load: ")
+            try:
+                card_set = Index_Card_Set.load_from_file(filename)
+                manage_card_set(card_set)
+            except:
+                print("Error loading file. Creating new card set")
+                name = input("Enter the new set's name: ")
+                card_set = Index_Card_Set(name)
+                print(f"Created new set: {name}")
+                manage_card_set(card_set)
+        elif choice == "3":
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+
+def manage_card_set(card_set):
+    while True:
+        print("\nCard Set Management")
+        print("-" * 50)
+        print(f"Current Set: {card_set.set_name}")
+        print("1. Add a new card")
+        print("2. Remove a card")
+        print("3. Display all cards")
+        print("4. Save set to file")
+        print("5. Return to main menu")
+
+        choice = input("\nEnter your choice (1-5): ")
+
+        if choice == "1":
+            name = input("Enter card name: ")
+            value = input("Enter card value: ")
+            card_set.add_card(name, value)
+        elif choice == "2":
+            name = input("Enter card name to remove: ")
+            value = input("Enter card value to remove: ")
+            card_to_remove = Index_Card(name, value)
+            card_set.remove_card(card_to_remove)
+        elif choice == "3":
+            card_set.display_cards()
+        elif choice == "4":
+            filename = input("Enter filename to save (include .json): ")
+            card_set.upload_to_file(filename)
+        elif choice == "5":
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+
+if __name__ == "__main__":
+    main()

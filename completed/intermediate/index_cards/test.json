@@ -1,0 +1,9 @@
+{
+    "set_name": "test",
+    "cards": [
+        {
+            "name": "test",
+            "value": "this is a test card"
+        }
+    ]
+}
