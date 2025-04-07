@@ -1,3 +1,6 @@
+import json
+
+
 class Index_Card:
     def __init__(self, name, value):
         self.name = name
@@ -94,6 +97,26 @@ class Index_Card_Set:
         for card in self.cards:
             card.display_card()
             print("-" * 50)
+
+    def upload_to_file(self, filename):
+        try:
+            card_set_data = {
+                "set_name": self.set_name,
+                "cards": []
+            }
+            for card in self.cards:
+                card_data = {
+                    "name": card.name,
+                    "value": card.value
+                }
+                card_set_data["cards"].append(card_data)
+
+            with open(filename, "w") as file:
+                json.dump(card_set_data, file, indent=4)
+            print(f"Successfully uploaded {self.set_name} to {filename}")
+            return True
+        except Exception as e:
+            print(f"Error saving card set: {e}")
 
 
 def main():
