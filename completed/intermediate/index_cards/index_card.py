@@ -118,6 +118,23 @@ class Index_Card_Set:
         except Exception as e:
             print(f"Error saving card set: {e}")
 
+    @staticmethod
+    def load_from_file(filename):
+        try:
+            with open(filename, "r") as file:
+                card_set_data = json.load(file)
+            card_set = Index_Card_Set(card_set_data["set_name"])
+
+            for card in card_set_data["cards"]:
+                new_card = Index_Card(card["name"], card["value"])
+                card_set.add_existing_card(new_card)
+            print(f"Successfully loaded card set from {filename}")
+            return card_set
+
+        except Exception as e:
+            print(f"Error loading card set: {e}")
+            raise
+
 
 def main():
     print("Welcome to the index card system")
