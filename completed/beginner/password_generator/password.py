@@ -102,12 +102,8 @@ def main():
             try:
                 num_char = int(
                     input("\nHow many characters should the password have? "))
-                if num_char < 4:
-                    print("Password must be at least 4 characters long.")
-                    continue
                 if not enough_chars(num_char, mods):
-                    print(
-                        f"Password length must be at least {sum(1 for v in mods.values() if v == 'y') + 1} characters to include all selected character types.")
+                    print("Password length must be at least 4 characters.")
                     continue
                 break
             except ValueError:
