@@ -81,3 +81,46 @@ def generate_password(num_char, modifiers):
     random.shuffle(s)
     return "".join(s)
 
+
+def main():
+    print("Welcome to the Password Generator!")
+    print("This program will help you create secure passwords.")
+    print("-" * 50)
+
+    while True:
+        print("\nPassword Requirements:")
+        mods = {}
+        uppercase = get_input("uppercase letters")
+        nums = get_input("numbers")
+        special_characters = get_input("special characters")
+
+        mods["uppercase"] = uppercase
+        mods["numbers"] = nums
+        mods["special characters"] = special_characters
+
+        while True:
+            try:
+                num_char = int(
+                    input("\nHow many characters should the password have? "))
+                if num_char < 4:
+                    print("Password must be at least 4 characters long.")
+                    continue
+                if not enough_chars(num_char, mods):
+                    print(
+                        f"Password length must be at least {sum(1 for v in mods.values() if v == 'y') + 1} characters to include all selected character types.")
+                    continue
+                break
+            except ValueError:
+                print("Please enter a valid number.")
+
+        password = generate_password(num_char, mods)
+        print("\nGenerated Password:", password)
+        print("-" * 50)
+
+        if input("\nGenerate another password? (y/n): ").lower() != 'y':
+            print("\nThank you for using the Password Generator!")
+            break
+
+
+if __name__ == "__main__":
+    main()
