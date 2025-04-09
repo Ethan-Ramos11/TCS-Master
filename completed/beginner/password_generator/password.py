@@ -1,4 +1,5 @@
 import random
+from templates import TEMPLATES
 
 # Predefined character sets
 LOWERCASE = "abcdefghijklmnopqrstuvwxyz"
@@ -88,26 +89,46 @@ def main():
     print("-" * 50)
 
     while True:
-        print("\nPassword Requirements:")
-        mods = {}
-        uppercase = get_input("uppercase letters")
-        nums = get_input("numbers")
-        special_characters = get_input("special characters")
+        print("\nChoose an option:")
+        print("1. Use a predefined template")
+        print("2. Custom password settings")
+        choice = input("Enter your choice (1/2): ").strip()
 
-        mods["uppercase"] = uppercase
-        mods["numbers"] = nums
-        mods["special characters"] = special_characters
+        if choice == "1":
+            print("\nAvailable templates:")
+            for template_name in TEMPLATES:
+                print(f"- {template_name}")
 
-        while True:
-            try:
-                num_char = int(
-                    input("\nHow many characters should the password have? "))
-                if not enough_chars(num_char, mods):
-                    print("Password length must be at least 4 characters.")
-                    continue
-                break
-            except ValueError:
-                print("Please enter a valid number.")
+            template_choice = input("\nEnter template name: ").strip().lower()
+            if template_choice in TEMPLATES:
+                template = TEMPLATES[template_choice]
+                num_char = template["length"]
+                mods = template["modifiers"]
+            else:
+                print("Invalid template choice. Using custom settings instead.")
+                choice = "2"
+
+        if choice == "2":
+            print("\nPassword Requirements:")
+            mods = {}
+            uppercase = get_input("uppercase letters")
+            nums = get_input("numbers")
+            special_characters = get_input("special characters")
+
+            mods["uppercase"] = uppercase
+            mods["numbers"] = nums
+            mods["special characters"] = special_characters
+
+            while True:
+                try:
+                    num_char = int(
+                        input("\nHow many characters should the password have? "))
+                    if not enough_chars(num_char, mods):
+                        print("Password length must be at least 4 characters.")
+                        continue
+                    break
+                except ValueError:
+                    print("Please enter a valid number.")
 
         password = generate_password(num_char, mods)
         print("\nGenerated Password:", password)
