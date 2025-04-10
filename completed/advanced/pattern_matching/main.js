@@ -93,3 +93,12 @@ function handleMatch() {
   }
   flippedCards = [];
 }
+
+function handleMisMatch() {
+  gameActive = false;
+  setTimeout(() => {
+    flippedCards.forEach((card) => card.classList.remove("flipped"));
+    flippedCards = [];
+    gameActive = true;
+  }, 1000);
+}
