@@ -20,7 +20,7 @@ function startGame() {
   let flippedCards = [];
   let matchedPairs = 0;
   let moves = 0;
-  let gameActive = True;
+  let gameActive = true;
   let timer = 0;
 
   movesDisplay.textContent = "0";
@@ -39,3 +39,11 @@ function startGame() {
   startButton.textContent = "Restart Game";
 }
 
+function createCards() {
+  gameBoard.innerHTML = "";
+
+  let cardSymbols = [...SYMBOLS, ...SYMBOLS];
+  cardSymbols.sort(() => Math.random() - 0.5);
+
+  cads 
+}
