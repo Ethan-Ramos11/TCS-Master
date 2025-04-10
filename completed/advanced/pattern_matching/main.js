@@ -79,3 +79,17 @@ function flipCard() {
   }
 }
 
+function handleMatch() {
+  flippedCards.forEach((card) => {
+    card.classList.add("matched");
+    card.removeEventListener("click", flipCard);
+  });
+
+  matchedPairs++;
+  matchesDisplay.textContent = matchedPairs;
+
+  if (matchedPairs === SYMBOLS.length) {
+    endGame();
+  }
+  flippedCards = [];
+}
