@@ -17,10 +17,10 @@ const messageDisplay = document.getElementById("message");
 startButton.addEventListener("click", startGame);
 
 function startGame() {
-  let flippedCards = [];
-  let matchedPairs = 0;
-  let moves = 0;
-  let gameActive = true;
+  flippedCards = [];
+  matchedPairs = 0;
+  moves = 0;
+  gameActive = true;
   let timer = 0;
 
   movesDisplay.textContent = "0";
@@ -48,11 +48,12 @@ function createCards() {
   cards = cardSymbols.map((symbol, index) => {
     const card = document.createElement("div");
     card.className = "card";
-    card.dataset = symbol;
+    card.dataset.symbol = symbol;
     card.dataset.index = index;
     card.textContent = symbol;
     card.addEventListener("click", flipCard);
     gameBoard.appendChild(card);
+    return card;
   });
 }
 
@@ -67,7 +68,7 @@ function flipCard() {
   this.classList.add("flipped");
   flippedCards.push(this);
 
-  if (flippedCards.length() === 2) {
+  if (flippedCards.length === 2) {
     moves++;
     movesDisplay.textContent = moves;
 
@@ -101,4 +102,12 @@ function handleMisMatch() {
     flippedCards = [];
     gameActive = true;
   }, 1000);
+}
+
+function endGame() {
+  messageDisplay.textContent = `Congratulations! You won in ${moves} moves and ${timer} seconds!`;
+
+  clearInterval(timer);
+
+  gameActive = false;
 }
