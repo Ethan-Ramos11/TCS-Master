@@ -45,5 +45,13 @@ function createCards() {
   let cardSymbols = [...SYMBOLS, ...SYMBOLS];
   cardSymbols.sort(() => Math.random() - 0.5);
 
-  cads 
+  cards = cardSymbols.map((symbol, index) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.dataset = symbol;
+    card.dataset.index = index;
+    card.textContent = symbol;
+    card.addEventListener("click", flipCard);
+    gameBoard.appendChild(card);
+  });
 }
