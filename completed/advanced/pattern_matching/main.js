@@ -55,3 +55,27 @@ function createCards() {
     gameBoard.appendChild(card);
   });
 }
+
+function flipCard() {
+  if (
+    !gameActive ||
+    this.classList.contains("flipped") ||
+    this.classList.contains("matched")
+  ) {
+    return;
+  }
+  this.classList.add("flipped");
+  flippedCards.push(this);
+
+  if (flippedCards.length() === 2) {
+    moves++;
+    movesDisplay.textContent = moves;
+
+    if (flippedCards[0].dataset.symbol === flippedCards[1].dataset.symbol) {
+      handleMatch();
+    } else {
+      handleMisMatch();
+    }
+  }
+}
+
