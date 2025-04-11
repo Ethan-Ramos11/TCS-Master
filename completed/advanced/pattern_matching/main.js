@@ -21,7 +21,7 @@ function startGame() {
   matchedPairs = 0;
   moves = 0;
   gameActive = true;
-  let timer = 0;
+  timer = 0;
 
   movesDisplay.textContent = "0";
   matchesDisplay.textContent = "0";
