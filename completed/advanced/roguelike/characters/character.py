@@ -109,12 +109,14 @@ class Character:
     # Equipment Management
 
     def equip_item(self, item: 'Item') -> bool:
-        """TODO: Attempt to equip item, handle slot conflicts"""
-        pass
+        if self.equipped_items[item.type] != None:
+            self.unequip_item(item.type)
+        self.equipped_items[item.type] = item
 
     def unequip_item(self, slot: str) -> 'Item':
-        """TODO: Remove item from specified slot"""
-        pass
+        if self.equipped_items == "None":
+            return
+        self.equipped_items = None
 
     def add_to_inventory(self, item: 'Item') -> bool:
         """TODO: Add item to inventory, handle capacity limits"""
