@@ -151,7 +151,7 @@ function handleMisMatch() {
 function endGame() {
   messageDisplay.textContent = `Congratulations! You won in ${moves} moves and ${timer} seconds!`;
 
-  clearInterval(timer);
+  clearInterval(timerInterval);
 
   gameActive = false;
 }
