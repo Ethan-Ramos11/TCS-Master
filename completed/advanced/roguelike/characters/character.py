@@ -94,10 +94,10 @@ class Character:
         self.max_mana += 5
         self.current_mana = self.max_mana
 
+
         stat_increase = (self.lvl // 2) * 3
-        self.attack += stat_increase
-        self.defense += stat_increase
-        self.speed += stat_increase
+        for val in self.stats.values():
+            val += stat_increase
 
     def add_status_effect(self, effect: str) -> None:
         if effect in self.status_effects():
