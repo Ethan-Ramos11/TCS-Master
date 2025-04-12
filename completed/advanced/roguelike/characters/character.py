@@ -1,3 +1,6 @@
+import random
+
+
 class Character:
     def __init__(self, hp: int = 100, mana: int = 10, attack: int = 5,
                  defense: int = 5, speed: int = 5, crit_chance: float = 0.5):
@@ -85,7 +88,7 @@ class Character:
     def update_stats(self) -> None:
 
         self.max_hp += 10
-        self.hp += 10 
+        self.hp += 10
         self.max_mana += 5
         self.current_mana = self.max_mana
 
@@ -95,8 +98,8 @@ class Character:
         self.speed += stat_increase
 
     def add_status_effect(self, effect: str) -> None:
-        """TODO: Add status effect, handle stacking and duration"""
-        pass
+        turns = random.randint(1, 3)
+        self.status_effects.append({effect: turns})
 
     def remove_status_effect(self, effect_name: str) -> None:
         """TODO: Remove specified status effect"""
