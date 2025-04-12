@@ -11,10 +11,12 @@ class Character:
         self.current_mana = mana
 
         # Combat stats
-        self.attack = attack
-        self.defense = defense
-        self.speed = speed
-        self.crit_chance = crit_chance
+        self.stats = {
+            "attack":  attack,
+            "defense": defense,
+            "speed": speed,
+            "crit_chance": crit_chance
+        }
 
         # Status and progression
         self.lvl = 1
@@ -128,8 +130,9 @@ class Character:
         return self.is_alive
 
     def get_stat(self, stat_name: str) -> int:
-        """TODO: Return current value of specified stat including equipment"""
-        pass
+        if stat_name not in self.stats:
+            return -1
+        return self.stats[stat_name]
 
     def get_equipped_stats(self) -> dict:
         """TODO: Return total stats including equipment bonuses"""
