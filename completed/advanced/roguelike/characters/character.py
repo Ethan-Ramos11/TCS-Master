@@ -99,15 +99,15 @@ class Character:
 
     def add_status_effect(self, effect: str) -> None:
         if effect in self.status_effects():
-            return 
+            return
         turns = random.randint(1, 3)
         self.status_effects.append({effect: turns})
-        
-    def remove_status_effect(self, effect_name: str) -> None:
-        """TODO: Remove specified status effect"""
-        pass
 
+    def remove_status_effect(self, effect_name: str) -> None:
+        if effect_name in self.status_effects:
+            del self.status_effects[effect_name]
     # Equipment Management
+
     def equip_item(self, item: 'Item') -> bool:
         """TODO: Attempt to equip item, handle slot conflicts"""
         pass
