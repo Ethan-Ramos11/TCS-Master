@@ -119,13 +119,13 @@ class Character:
         self.equipped_items = None
 
     def add_to_inventory(self, item: 'Item') -> bool:
-        """TODO: Add item to inventory, handle capacity limits"""
-        pass
+        if len(self.inventory) == 5:
+            return False
+        self.inventory.append(item)
 
     # Utility Functions
-    def is_dead(self) -> bool:
-        """FIXME: Return current alive status"""
-        pass
+    def is_alive(self) -> bool:
+        return self.is_alive
 
     def get_stat(self, stat_name: str) -> int:
         """TODO: Return current value of specified stat including equipment"""
