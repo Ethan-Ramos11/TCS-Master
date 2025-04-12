@@ -20,7 +20,7 @@ class Character:
         self.lvl = 1
         self.exp = 0
         self.exp_to_next_level = 100
-        self.status_effects = []
+        self.status_effects = {}
         self.is_alive = True
 
         # Equipment and inventory
@@ -98,9 +98,11 @@ class Character:
         self.speed += stat_increase
 
     def add_status_effect(self, effect: str) -> None:
+        if effect in self.status_effects():
+            return 
         turns = random.randint(1, 3)
         self.status_effects.append({effect: turns})
-
+        
     def remove_status_effect(self, effect_name: str) -> None:
         """TODO: Remove specified status effect"""
         pass
