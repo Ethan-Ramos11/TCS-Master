@@ -94,7 +94,6 @@ class Character:
         self.max_mana += 5
         self.current_mana = self.max_mana
 
-
         stat_increase = (self.lvl // 2) * 3
         for val in self.stats.values():
             val += stat_increase
@@ -135,9 +134,8 @@ class Character:
         return self.stats[stat_name]
 
     def get_equipped_stats(self) -> dict:
-        """TODO: Return total stats including equipment bonuses"""
-        pass
-
+        stats = self.stats
+        for 
     def save_state(self) -> dict:
         """TODO: Return character's current state for saving"""
         pass
