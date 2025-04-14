@@ -9,5 +9,8 @@ class Task:
         self.priority = priority
         self.complete = False
         self.id = id
+
+    def mark_completed(self):
+        self.complete = True
     
-        
+    
