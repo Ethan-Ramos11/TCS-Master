@@ -66,3 +66,9 @@ class Task:
         new_task = cls(data["description"], data["id"],
                        data["priority"], data["due_date"])
         return new_task
+
+
+class Todolist:
+    def __init__(self):
+        self.tasks = []
+
