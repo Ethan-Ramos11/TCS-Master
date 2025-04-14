@@ -135,7 +135,10 @@ class Character:
 
     def get_equipped_stats(self) -> dict:
         stats = self.stats
-        for 
+        for item in self.equipped_items.values():
+            stats[item.type] += item.stat_boost
+        return stats
+
     def save_state(self) -> dict:
         """TODO: Return character's current state for saving"""
         pass
