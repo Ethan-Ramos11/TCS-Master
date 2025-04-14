@@ -72,3 +72,10 @@ class Todolist:
     def __init__(self):
         self.tasks = []
 
+    def add_task(self, task):
+        if not isinstance(task, Task):
+            print("Please enter an actual task")
+            return False
+        
+        self.tasks.append(task)
+        return True
