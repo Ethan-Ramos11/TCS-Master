@@ -209,7 +209,28 @@ class Todolist:
         pass
 
     def get_statistics(self):
-        pass
+        stats = {}
+        stats["Total tasks"] = len(self.tasks)
+        stats["Completed"] = 0
+        stats["Incomplete"] = 0
+        stats["With due date"] = 0
+        stats["Without due date"] = 0
+        for task in self.tasks:
+            if task.completed:
+                stats["Completed"] += 1
+            else:
+                stats["Incomplete"] += 1
+            if task.due_date:
+                stats["With due date"] += 1
+            else:
+                stats["Without due date"] += 1
+        stats["priority breakdown"] = self.get_tasks_by_priority()
+        if stats["Total tasks"] > 0:
+            stats["completion rate"] = stats["Completed"] / \
+                stats["Total tasks"] * 100
+        else:
+            stats["completion rate"] = 0
+        return stats
 
     def get_tasks_by_priority(self):
         task_priorities = {
@@ -221,6 +242,6 @@ class Todolist:
         for task in self.tasks:
             if task.priority == None:
                 task_priorities["None"] += 1
-            else: 
+            else:
                 task_priorities[task.priority] += 1
         return task_priorities
