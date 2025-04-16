@@ -76,6 +76,15 @@ class Todolist:
         if not isinstance(task, Task):
             print("Please enter an actual task")
             return False
-        
         self.tasks.append(task)
         return True
+
+    def remove_task(self, task_id):
+        if type(task_id) != str:
+            print("Please enter a valid task_id")
+        for i in range(len(self.tasks)):
+            if self.tasks[i].id == task_id:
+                del self.tasks[i]
+                return True
+        print("Task not in list")
+        return False
