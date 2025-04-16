@@ -102,7 +102,19 @@ class Todolist:
         pass
 
     def filter_tasks(self, priority=None, due_date=None, completed=None):
-        pass
+        filtered = []
+
+        for task in self.tasks:
+            add = True
+            if priority != None and task.priority != priority:
+                add = False
+            elif due_date != None and task.due_date != due_date:
+                add = False
+            elif completed != None and task.completed != completed:
+                add = False
+            if add:
+                filtered.append(task)
+        return filtered
 
     def mark_task_completed(self, task_id):
         pass
