@@ -100,7 +100,33 @@ class Todolist:
         return None
 
     def list_tasks(self):
-        pass
+        for task in self.tasks:
+            description = task.description
+            priority = task.priority if task.priority else "None"
+            due_date = task.due_date if task.due_date else "None"
+            status = "✅ Complete" if task.completed else "⬜ Incomplete"
+
+            max_length = max(len(description), len(priority),
+                             len(due_date), len(status)) + 2
+            box_width = max_length + 4  # Add padding for borders
+
+            top_border = "┌" + "─" * (box_width - 2) + "┐"
+            bottom_border = "└" + "─" * (box_width - 2) + "┘"
+            separator = "├" + "─" * (box_width - 2) + "┤"
+
+            desc_line = f"│ Task: {description.ljust(max_length)} │"
+            priority_line = f"│ Priority: {priority.ljust(max_length - 9)} │"
+            due_line = f"│ Due Date: {due_date.ljust(max_length - 10)} │"
+            status_line = f"│ Status: {status.ljust(max_length - 8)} │"
+
+            print(top_border)
+            print(desc_line)
+            print(separator)
+            print(priority_line)
+            print(due_line)
+            print(status_line)
+            print(bottom_border)
+            print() 
 
     def filter_tasks(self, priority=None, due_date=None, completed=None):
         filtered = []
