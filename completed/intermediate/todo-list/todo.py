@@ -116,14 +116,14 @@ class Todolist:
     def save_to_file(self, filename):
         pass
 
-    @staticmethod
-    def load_from_file(filename):
+    @classmethod
+    def load_from_file(cls, filename):
         pass
 
-    def sort_tasks(by='priority'):
+    def sort_tasks(self, by='priority'):
         pass
 
-    def search_tasks(keyword):
+    def search_tasks(self, keyword):
         pass
 
     def get_statistics(self):
