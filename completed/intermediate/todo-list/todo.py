@@ -88,3 +88,46 @@ class Todolist:
                 return True
         print("Task not in list")
         return False
+
+    def get_task(self, task_id):
+        if type(task_id) != str:
+            print("Please enter a valid task_id")
+        for i in range(len(self.tasks)):
+            if self.tasks[i].id == task_id:
+                return self.tasks[i]
+        print("Task not in list")
+        return None
+
+    def list_tasks(self):
+        pass
+
+    def filter_tasks(self, priority=None, due_date=None, completed=None):
+        pass
+
+    def mark_task_completed(self, task_id):
+        pass
+
+    def update_task_priority(self, task_id, new_priority):
+        pass
+
+    def update_task_due_date(self, task_id, new_due_date):
+        pass
+
+    def save_to_file(self, filename):
+        pass
+
+    @staticmethod
+    def load_from_file(filename):
+        pass
+
+    def sort_tasks(by='priority'):
+        pass
+
+    def search_tasks(keyword):
+        pass
+
+    def get_statistics(self):
+        pass
+
+    def get_tasks_by_priority(self):
+        pass
