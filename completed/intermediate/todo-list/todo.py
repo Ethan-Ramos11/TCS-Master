@@ -118,13 +118,28 @@ class Todolist:
         return filtered
 
     def mark_task_completed(self, task_id):
-        pass
+        for task in self.tasks:
+            if task.id == task_id:
+                task.completed = True
+                return True
+        print("Task not found")
+        return False
 
     def update_task_priority(self, task_id, new_priority):
-        pass
+        for task in self.tasks:
+            if task.id == task_id:
+                task.update_priority(new_priority)
+                return True
+        print("Task not found")
+        return False
 
     def update_task_due_date(self, task_id, new_due_date):
-        pass
+        for task in self.tasks:
+            if task.id == task_id:
+                task.update_due_date(new_due_date)
+                return True
+        print("Task not found")
+        return False
 
     def save_to_file(self, filename):
         try:
