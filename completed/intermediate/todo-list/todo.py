@@ -69,7 +69,8 @@ class Task:
 
 
 class Todolist:
-    def __init__(self):
+    def __init__(self, list_name="My list"):
+        self.list_name = list_name
         self.tasks = []
 
     def add_task(self, task):
@@ -126,11 +127,39 @@ class Todolist:
         pass
 
     def save_to_file(self, filename):
-        pass
+        try:
+            data = {"list_name": self.list_name,
+                    "tasks": [task.to_dict() for task in self.tasks]}
+            with open(filename, "w") as file:
+                json.dump(data, file)
+            return True
+        except FileNotFoundError:
+            print("File not found")
+            return False
+        except PermissionError:
+            print("No permission to write to file")
+            return False
+        except IOError as e:
+            print(f"Error writing to file: {e}")
+            return False
 
     @classmethod
     def load_from_file(cls, filename):
-        pass
+        try:
+
+            with open(filename, "r") as file:
+                info = json.load(file)
+                new_lst = cls(info["list_name"])
+                for task_data in info["tasks"]:
+                    task = Task.from_dict(task_data)
+                    new_lst.add_task(task)
+                return new_lst
+        except FileNotFoundError:
+            print("File not found")
+            return None
+        except json.JSONDecodeError:
+            print("Invalid JSON format")
+            return None
 
     def sort_tasks(self, by='priority'):
         pass
