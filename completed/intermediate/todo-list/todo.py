@@ -126,7 +126,7 @@ class Todolist:
             print(due_line)
             print(status_line)
             print(bottom_border)
-            print() 
+            print()
 
     def filter_tasks(self, priority=None, due_date=None, completed=None):
         filtered = []
@@ -212,4 +212,15 @@ class Todolist:
         pass
 
     def get_tasks_by_priority(self):
-        pass
+        task_priorities = {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "None": 0
+        }
+        for task in self.tasks:
+            if task.priority == None:
+                task_priorities["None"] += 1
+            else: 
+                task_priorities[task.priority] += 1
+        return task_priorities
