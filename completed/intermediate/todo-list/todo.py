@@ -203,7 +203,22 @@ class Todolist:
             return None
 
     def sort_tasks(self, by='priority'):
-        pass
+        if by == 'priority':
+            priority_order = {"high": 0, "medium": 1, "low": 2, "None": 3}
+            self.tasks.sort(key=lambda task: priority_order.get(
+                task.priority if task.priority else "None", 3))
+        elif by == 'due_date':
+            self.tasks.sort(key=lambda task:
+                            (task.due_date is None,
+                             task.due_date if task.due_date else ''))
+        elif by == 'completion':
+            self.tasks.sort(key=lambda task: task.completed)
+        elif by == 'description':
+            self.tasks.sort(key=lambda task: task.description)
+        else:
+            print(f"Invalid entry for sort: {by}")
+            return False
+        return True
 
     def search_tasks(self, keyword):
         pass
