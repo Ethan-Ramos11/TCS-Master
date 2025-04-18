@@ -264,3 +264,190 @@ class Todolist:
             else:
                 task_priorities[task.priority] += 1
         return task_priorities
+
+
+def main():
+    todo_list = Todolist()
+
+    while True:
+        print("\n=== Todo List Manager ===")
+        print("1. Add new task")
+        print("2. List all tasks")
+        print("3. Search tasks")
+        print("4. Filter tasks")
+        print("5. Sort tasks")
+        print("6. Update task")
+        print("7. View statistics")
+        print("8. Save todo list")
+        print("9. Load todo list")
+        print("0. Exit")
+
+        choice = input("\nEnter your choice (0-9): ")
+
+        if choice == "0":
+            print("Goodbye!")
+            break
+
+        elif choice == "1":
+            description = input("Enter task description: ")
+            priority = input("Enter priority (high/medium/low/none): ").lower()
+            if priority not in ["high", "medium", "low", "none"]:
+                priority = None
+            due_date = input("Enter due date (mm/dd/yy) or leave empty: ")
+            if not due_date:
+                due_date = None
+            task = Task(description, priority=priority, due_date=due_date)
+            if todo_list.add_task(task):
+                print("Task added successfully!")
+            else:
+                print("Failed to add task.")
+
+        elif choice == "2":
+            if not todo_list.tasks:
+                print("No tasks in the list.")
+            else:
+                todo_list.list_tasks()
+
+        elif choice == "3":
+            keyword = input("Enter search keyword: ")
+            results = todo_list.search_tasks(keyword)
+            if not results:
+                print("No tasks found.")
+            else:
+                for task in results:
+                    print(f"\nTask: {task.description}")
+                    print(
+                        f"Priority: {task.priority if task.priority else 'None'}")
+                    print(
+                        f"Due Date: {task.due_date if task.due_date else 'None'}")
+                    print(
+                        f"Status: {'Complete' if task.completed else 'Incomplete'}")
+
+        elif choice == "4":
+            print("\nFilter by:")
+            print("1. Priority")
+            print("2. Due Date")
+            print("3. Completion Status")
+            filter_choice = input("Enter your choice (1-3): ")
+
+            if filter_choice == "1":
+                priority = input(
+                    "Enter priority (high/medium/low/none): ").lower()
+                if priority not in ["high", "medium", "low", "none"]:
+                    print("Invalid priority.")
+                    continue
+                filtered = todo_list.filter_tasks(priority=priority)
+            elif filter_choice == "2":
+                due_date = input("Enter due date (mm/dd/yy): ")
+                filtered = todo_list.filter_tasks(due_date=due_date)
+            elif filter_choice == "3":
+                completed = input(
+                    "Show completed tasks? (y/n): ").lower() == "y"
+                filtered = todo_list.filter_tasks(completed=completed)
+            else:
+                print("Invalid choice.")
+                continue
+
+            if not filtered:
+                print("No tasks found.")
+            else:
+                for task in filtered:
+                    print(f"\nTask: {task.description}")
+                    print(
+                        f"Priority: {task.priority if task.priority else 'None'}")
+                    print(
+                        f"Due Date: {task.due_date if task.due_date else 'None'}")
+                    print(
+                        f"Status: {'Complete' if task.completed else 'Incomplete'}")
+
+        elif choice == "5":
+            print("\nSort by:")
+            print("1. Priority")
+            print("2. Due Date")
+            print("3. Completion Status")
+            print("4. Description")
+            sort_choice = input("Enter your choice (1-4): ")
+
+            if sort_choice == "1":
+                todo_list.sort_tasks("priority")
+            elif sort_choice == "2":
+                todo_list.sort_tasks("due_date")
+            elif sort_choice == "3":
+                todo_list.sort_tasks("completion")
+            elif sort_choice == "4":
+                todo_list.sort_tasks("description")
+            else:
+                print("Invalid choice.")
+                continue
+
+            print("Tasks sorted successfully!")
+
+        elif choice == "6":
+            task_id = input("Enter task ID: ")
+            task = todo_list.get_task(task_id)
+            if not task:
+                print("Task not found.")
+                continue
+
+            print("\nUpdate:")
+            print("1. Priority")
+            print("2. Due Date")
+            print("3. Completion Status")
+            update_choice = input("Enter your choice (1-3): ")
+
+            if update_choice == "1":
+                new_priority = input(
+                    "Enter new priority (high/medium/low/none): ").lower()
+                if todo_list.update_task_priority(task_id, new_priority):
+                    print("Priority updated successfully!")
+                else:
+                    print("Failed to update priority.")
+            elif update_choice == "2":
+                new_date = input("Enter new due date (mm/dd/yy): ")
+                if todo_list.update_task_due_date(task_id, new_date):
+                    print("Due date updated successfully!")
+                else:
+                    print("Failed to update due date.")
+            elif update_choice == "3":
+                if todo_list.mark_task_completed(task_id):
+                    print("Task marked as completed!")
+                else:
+                    print("Failed to update task status.")
+            else:
+                print("Invalid choice.")
+
+        elif choice == "7":
+            stats = todo_list.get_statistics()
+            print("\n=== Statistics ===")
+            print(f"Total tasks: {stats['Total tasks']}")
+            print(f"Completed: {stats['Completed']}")
+            print(f"Incomplete: {stats['Incomplete']}")
+            print(f"With due date: {stats['With due date']}")
+            print(f"Without due date: {stats['Without due date']}")
+            print(f"Completion rate: {stats['completion rate']:.2f}%")
+            print("\nPriority breakdown:")
+            for priority, count in stats['priority breakdown'].items():
+                print(f"{priority}: {count}")
+
+        elif choice == "8":
+            filename = input("Enter filename to save: ")
+            if todo_list.save_to_file(filename):
+                print("Todo list saved successfully!")
+            else:
+                print("Failed to save todo list.")
+
+        elif choice == "9":
+            filename = input("Enter filename to load: ")
+            loaded_list = Todolist.load_from_file(filename)
+            if loaded_list:
+                todo_list = loaded_list
+                print("Todo list loaded successfully!")
+            else:
+                print("Failed to load todo list.")
+
+        else:
+            print("Invalid choice. Please try again.")
+
+
+if __name__ == "__main__":
+    main()
