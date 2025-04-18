@@ -13,7 +13,7 @@ class Task:
             self.priority = priority
         else:
             self.priority = None
-        if re.match(pattern, due_date):
+        if due_date is not None and re.match(pattern, due_date):
             self.due_date = due_date
         else:
             self.due_date = None
@@ -55,9 +55,9 @@ class Task:
         info = {
             "id": self.id,
             "description": self.description,
-            "due date": self.due_date,
+            "due_date": self.due_date,
             "priority": self.priority,
-            "complete": self.completed
+            "completed": self.completed
         }
         return info
 
@@ -223,7 +223,7 @@ class Todolist:
     def search_tasks(self, keyword):
         tasks_with_keyword = []
         for task in self.tasks:
-            if keyword.lower() in task.description:
+            if keyword.lower() in task.description.lower():
                 tasks_with_keyword.append(task)
         return tasks_with_keyword
 
