@@ -221,7 +221,11 @@ class Todolist:
         return True
 
     def search_tasks(self, keyword):
-        pass
+        tasks_with_keyword = []
+        for task in self.tasks:
+            if keyword.lower() in task.description:
+                tasks_with_keyword.append(task)
+        return tasks_with_keyword
 
     def get_statistics(self):
         stats = {}
