@@ -89,5 +89,3 @@ class Category:
             return f"Category: {self.name}\nType: {self.category_type}"
         else:
             return f"Category: {self.name}"
-
-
