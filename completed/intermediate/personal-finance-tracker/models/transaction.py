@@ -37,6 +37,7 @@ class Transaction:
         Returns True for expense transactions, False for income.
         """
         return self.transaction_type == "expense"
+
     def update_transaction(self, new_name: Optional[str] = None,
                            new_amount: Optional[float] = None,
                            new_category: Optional[Category] = None,
@@ -46,14 +47,23 @@ class Transaction:
         Updates transaction details. Only updates provided fields.
         Others remain unchanged.
         """
-        pass
 
     def to_dict(self) -> dict:
         """
         Converts transaction to dictionary format for storage/serialization.
         Useful for saving to JSON or database.
         """
-        pass
+        info = {
+            "name": self.name,
+            "id": self.id,
+            "amount": self.amount,
+            "category": self.category,
+            "date": self.date,
+            "transaction_type": self.transaction_type,
+            "account": self.account,
+            "description": self.description
+        }
+        return info
 
     @classmethod
     def from_dict(cls, data: dict) -> 'Transaction':
@@ -61,18 +71,35 @@ class Transaction:
         Creates a Transaction instance from a dictionary.
         Useful for loading from JSON or database.
         """
-        pass
+        if not all(key in data for key in ["name",
+                                           "id",
+                                           "amount",
+                                           "category",
+                                           "date",
+                                           "transaction_type",
+                                           "account",
+                                           "description"]):
+            raise ValueError("Dictionary missing fields")
+        else:
+            return cls(data["name"],
+                       data["id"],
+                       data["amount"],
+                       data["category"],
+                       data["date"],
+                       data["transaction_type"],
+                       data["account"],
+                       data["description"])
 
     def __eq__(self, other: 'Transaction') -> bool:
         """
         Defines how to compare two transactions for equality.
-        Two transactions might be equal if they have the same name and amount.
+        Two transactions might be equal if they have the same name, amount, and date.
         """
-        pass
+        return self.name == other.name and self.amount == other.amount and self.date == other.date
 
     def __str__(self) -> str:
         """
         Returns a string representation of the transaction.
         Should include name, amount, date, and type.
         """
-        return self.transaction_type == "income"pass
+        return f"name: {self.name}\namount: ${self.amount}\ndate: {self.date}\ntype: {self.type}"
