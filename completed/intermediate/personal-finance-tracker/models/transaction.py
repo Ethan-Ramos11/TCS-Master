@@ -22,7 +22,7 @@ class Transaction:
         - Must be positive
         - Must be a valid number
         """
-        pass
+        return type(self.amount) == float and self.amount > 0
 
     def is_income(self) -> bool:
         """
