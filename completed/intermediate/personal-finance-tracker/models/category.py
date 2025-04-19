@@ -21,7 +21,9 @@ class Category:
         - No special characters
         - Within length limits
         """
-        pass
+        if self.name or self.name.isalnum():
+            return True
+        return False 
 
     def is_expense_category(self) -> bool:
         """
