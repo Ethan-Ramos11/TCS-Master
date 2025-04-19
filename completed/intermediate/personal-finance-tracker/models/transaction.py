@@ -29,15 +29,14 @@ class Transaction:
         Checks if this is an income transaction.
         Returns True for income transactions, False for expenses.
         """
-        pass
+        return self.transaction_type == "income"
 
     def is_expense(self) -> bool:
         """
         Checks if this is an expense transaction.
         Returns True for expense transactions, False for income.
         """
-        pass
-
+        return self.transaction_type == "expense"
     def update_transaction(self, new_name: Optional[str] = None,
                            new_amount: Optional[float] = None,
                            new_category: Optional[Category] = None,
@@ -76,4 +75,4 @@ class Transaction:
         Returns a string representation of the transaction.
         Should include name, amount, date, and type.
         """
-        pass
+        return self.transaction_type == "income"pass
