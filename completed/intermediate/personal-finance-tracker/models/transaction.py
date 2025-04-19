@@ -47,6 +47,16 @@ class Transaction:
         Updates transaction details. Only updates provided fields.
         Others remain unchanged.
         """
+        if new_name:
+            self.name = new_name
+        if new_amount and type(new_amount) == float and new_amount > 0:
+            self.amount = new_amount
+        if new_category:
+            self.category = new_category
+        if new_description:
+            self.description = new_description
+        if new_type and new_type in ["income", "expense"]:
+            self.transaction_type = new_type
 
     def to_dict(self) -> dict:
         """
@@ -102,4 +112,4 @@ class Transaction:
         Returns a string representation of the transaction.
         Should include name, amount, date, and type.
         """
-        return f"name: {self.name}\namount: ${self.amount}\ndate: {self.date}\ntype: {self.type}"
+        return f"name: {self.name}\namount: ${self.amount}\ndate: {self.date}\ntype: {self.transaction_type}"
