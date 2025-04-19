@@ -23,7 +23,7 @@ class Category:
         """
         if self.name or self.name.isalnum():
             return True
-        return False 
+        return False
 
     def is_expense_category(self) -> bool:
         """
@@ -39,7 +39,12 @@ class Category:
         Updates category details. Only updates provided fields.
         Others remain unchanged.
         """
-        pass
+        if new_name and new_name.isalnum():
+            self.name = new_name
+        if new_description:
+            self.description = new_description
+        if new_type and new_type in ["expense", "income"]:
+            self.category_type = new_type
 
     def to_dict(self) -> dict:
         """
