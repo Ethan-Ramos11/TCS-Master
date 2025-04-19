@@ -21,7 +21,7 @@ class Category:
         - No special characters
         - Within length limits
         """
-        if self.name or self.name.isalnum():
+        if self.name and self.name.isalnum():
             return True
         return False
 
@@ -30,7 +30,7 @@ class Category:
         Checks if this is an expense category.
         Returns True for expense categories, False for income categories.
         """
-        pass
+        return self.category_type == "expense"
 
     def update_category(self, new_name: Optional[str] = None,
                         new_description: Optional[str] = None,
@@ -53,8 +53,10 @@ class Category:
         """
         info = {
             "name": self.name,
-            "description": self.description
+            "description": self.description,
+            "type": self.category_type
         }
+        return info
 
     @classmethod
     def from_dict(cls, data: dict) -> 'Category':
@@ -62,24 +64,30 @@ class Category:
         Creates a Category instance from a dictionary.
         Useful for loading from JSON or database.
         """
-        pass
+        if not all(key in data for key in ["name", "description", "type"]):
+            raise ValueError("Dictionary missing fields ")
+        else:
+            return cls(data["name"], data["description"], data["type"])
 
     def __eq__(self, other: 'Category') -> bool:
         """
         Defines how to compare two categories for equality.
         Two categories might be equal if they have the same name.
         """
-        return self.name == other.name and self.description == other.description
+        return self.name == other.name and self.description == other.description and self.category_type == other.category_type
 
     def __str__(self) -> str:
         """
         Returns a string representation of the category.
         This is more Pythonic than having a print_category method.
         """
-        if self.description:
-            print(f"Category: {self.name}\nDescription: {self.description}")
+        if self.description and self.category_type:
+            return f"Category: {self.name}\nDescription: {self.description}\nType: {self.category_type}"
+        elif self.description:
+            return f"Category: {self.name}\nDescription: {self.description}"
+        elif self.category_type:
+            return f"Category: {self.name}\nType: {self.category_type}"
         else:
-            print(f"Category: {self.name}")
+            return f"Category: {self.name}"
 
 
-test = Category("Test category", "This is a test category")
