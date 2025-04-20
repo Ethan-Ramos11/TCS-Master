@@ -39,14 +39,20 @@ class Account:
             raise KeyError(f"Print {transaction} not found")
         else:
             self.transaction.remove(transaction)
-            
 
     def get_transactions_by_date(self, start_date: datetime,
                                  end_date: datetime) -> List[Transaction]:
         """
         Returns all transactions within the specified date range.
         """
-        pass
+        transactions_in_date_range = []
+        if start_date > end_date:
+            print("Invalid date range")
+            return None
+        for transaction in self.transactions:
+            if start_date <= transaction.date <= end_date:
+                transactions_in_date_range.append(transaction)
+        return transactions_in_date_range
 
     def get_transactions_by_category(self, category: str) -> List[Transaction]:
         """
