@@ -28,8 +28,12 @@ class Account:
         Validates transaction before adding.
         """
         if transaction in self.transactions:
-            print("Transaction already in the account")
+            raise ValueError("Transaction already in the account")
         self.transactions.append(transaction)
+        if transaction.is_expense():
+            self.balance -= transaction.amount
+        else:
+            self.balance += transaction.amount
 
     def remove_transaction(self, transaction: Transaction) -> None:
         """
@@ -39,7 +43,11 @@ class Account:
         if transaction not in self.transactions:
             raise KeyError(f"Print {transaction} not found")
         else:
-            self.transaction.remove(transaction)
+            self.transactions.remove(transaction)
+            if transaction.is_expense():
+                self.balance += transaction.amount
+            else:
+                self.balance -= transaction.amount
 
     def get_transactions_by_date(self, start_date: datetime,
                                  end_date: datetime) -> List[Transaction]:
@@ -140,5 +148,3 @@ class Account:
         Should include name, type, and current balance.
         """
         return f"name: {self.name}\ntype: {self.account_type}\nbalance: ${self.balance}"
-    
-    
