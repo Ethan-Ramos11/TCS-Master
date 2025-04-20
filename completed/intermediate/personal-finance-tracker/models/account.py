@@ -55,7 +55,7 @@ class Account:
                 transactions_in_date_range.append(transaction)
         return transactions_in_date_range
 
-    def get_transactions_by_category(self, category: Category) -> List[Transaction]:
+    def get_transactions_by_category(self, category: 'Category') -> List[Transaction]:
         """
         Returns all transactions matching the specified category.
         """
@@ -132,7 +132,7 @@ class Account:
         Defines how to compare two accounts for equality.
         Two accounts might be equal if they have the same name and type.
         """
-        pass
+        return self.name == other.name and self.account_type == other.account_type
 
     def __str__(self) -> str:
         """
