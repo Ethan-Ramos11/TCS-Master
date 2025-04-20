@@ -139,4 +139,6 @@ class Account:
         Returns a string representation of the account.
         Should include name, type, and current balance.
         """
-        pass
+        return f"name: {self.name}\ntype: {self.account_type}\nbalance: ${self.balance}"
+    
+    
