@@ -82,7 +82,7 @@ class Account:
             self.name = new_name
         if type(new_balance) == float and self.balance != new_balance:
             self.balance = new_balance
-        if new_type and new_type in ["chekcing", "savings", "credit"]:
+        if new_type and new_type in ["checking", "savings", "credit"]:
             self.account_type = new_type
         if type(new_description) == str and new_description != self.description:
             self.description = new_description
@@ -92,7 +92,14 @@ class Account:
         Converts account to dictionary format for storage/serialization.
         Useful for saving to JSON or database.
         """
-        pass
+        info = {
+            "name": self.name,
+            "balance": self.balance,
+            "account_type": self.account_type,
+            "description": self.description,
+            "transactions": [t.to_dict() for t in self.transactions] if self.transactions else []
+        }
+        return info
 
     @classmethod
     def from_dict(cls, data: dict) -> 'Account':
@@ -100,7 +107,25 @@ class Account:
         Creates an Account instance from a dictionary.
         Useful for loading from JSON or database.
         """
-        pass
+        if not all(key in data for key in ["name",
+                                           "balance",
+                                           "account_type",
+                                           "description",
+                                           "transactions"]):
+            raise ValueError("Dictionary missing fields")
+        if type(data["balance"]) == float and data["account_type"] in ["checking", "savings", "credit"]:
+            new_account = cls(data['name'], data["balance"],
+                              data["account_type"], data["description"], [])
+            for transaction_info in data["transactions"]:
+                try:
+                    transaction = Transaction.from_dict(transaction_info)
+                    new_account.add_transaction(transaction)
+                except ValueError as e:
+                    print(f"Error: {e}")
+            return new_account
+        else:
+            print("Invalid data provided")
+            return None
 
     def __eq__(self, other: 'Account') -> bool:
         """
