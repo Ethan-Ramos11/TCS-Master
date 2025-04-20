@@ -26,14 +26,20 @@ class Account:
         Adds a transaction to the account and updates the balance.
         Validates transaction before adding.
         """
-        pass
+        if transaction in self.transactions:
+            print("Transaction already in the account")
+        self.transactions.append(transaction)
 
     def remove_transaction(self, transaction: Transaction) -> None:
         """
         Removes a transaction from the account and updates the balance.
         Raises error if transaction not found.
         """
-        pass
+        if transaction not in self.transactions:
+            raise KeyError(f"Print {transaction} not found")
+        else:
+            self.transaction.remove(transaction)
+            
 
     def get_transactions_by_date(self, start_date: datetime,
                                  end_date: datetime) -> List[Transaction]:
