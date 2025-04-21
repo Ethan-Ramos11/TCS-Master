@@ -19,14 +19,16 @@ class Budget:
         - Must be positive
         - Must be a valid number
         """
-        return self.amount_limit > 0 and type(self.amount_limit) == float:
+        return self.amount_limit > 0 and type(self.amount_limit) == float
 
     def update_spending(self, amount: float) -> None:
         """
         Updates the current spending amount.
         Validates the amount before updating.
         """
-        pass
+        if type(amount) != float or amount < 0:
+            raise ValueError("Invalid entry for spending amount")
+        self.current_spending += amount
 
     def get_remaining_amount(self) -> float:
         """
