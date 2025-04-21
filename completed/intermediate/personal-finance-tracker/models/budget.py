@@ -109,9 +109,9 @@ class Budget:
     def __eq__(self, other: 'Budget') -> bool:
         """
         Defines how to compare two budgets for equality.
-        Two budgets might be equal if they have the same category and time period.
+        Two budgets are equal if they have the same name, category, and time period.
         """
-        
+        return self.name == other.name and self.category == other.category and self.time_period == other.time_period
 
     def __str__(self) -> str:
         """
