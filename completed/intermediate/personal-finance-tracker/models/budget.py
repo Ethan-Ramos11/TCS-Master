@@ -6,6 +6,7 @@ from category import Category
 
 @dataclass
 class Budget:
+    name: str
     category: Category
     amount_limit: float
     time_period: str  # "monthly", "yearly", weekly.
@@ -77,6 +78,7 @@ class Budget:
         Useful for saving to JSON or database.
         """
         info = {
+            "name": self.name,
             "category": self.category,
             "amount_limit": self.amount_limit,
             "time_period": self.time_period,
@@ -92,14 +94,16 @@ class Budget:
         Creates a Budget instance from a dictionary.
         Useful for loading from JSON or database.
         """
-        if not all(key in data for key in ["category",
+        if not all(key in data for key in ["name",
+                                           "category",
                                            "amount_limit",
                                            "time_period",
                                            "start_date",
                                            "end_date",
                                            "current_spending"]):
             raise ValueError("Dictionary missing fields")
-        return cls(data["category"],
+        return cls(data["name"],
+                   data["category"],
                    data["amount_limit"],
                    data["time_period"],
                    data["start_date"],
@@ -116,6 +120,6 @@ class Budget:
     def __str__(self) -> str:
         """
         Returns a string representation of the budget.
-        Should include category, limit, current spending, and remaining amount.
+        Includes name, category, limit, current spending, and remaining amount.
         """
-        pass
+        return f"Name: {self.name}\nCategory: {self.category}\nLimit: {self.amount_limit}\nCurrent Spending: {self.current_spending}\nRemaining Amount: {self.get_remaining_amount()}"
