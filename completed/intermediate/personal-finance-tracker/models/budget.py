@@ -69,14 +69,22 @@ class Budget:
         if type(new_time_period) == str and new_time_period in ["monthly", "yearly", "weekly"] and new_time_period != self.time_period:
             self.time_period = new_time_period
         if type(new_end_date) == datetime and new_end_date != self.end_date:
-            self.end_date = new_end_date 
+            self.end_date = new_end_date
 
     def to_dict(self) -> dict:
         """
         Converts budget to dictionary format for storage/serialization.
         Useful for saving to JSON or database.
         """
-        pass
+        info = {
+            "category": self.category,
+            "amount_limit": self.amount_limit,
+            "time_period": self.time_period,
+            "start_date": self.start_date,
+            "end_date": self.end_date,
+            "current_spending": self.current_spending
+        }
+        return info
 
     @classmethod
     def from_dict(cls, data: dict) -> 'Budget':
@@ -84,14 +92,26 @@ class Budget:
         Creates a Budget instance from a dictionary.
         Useful for loading from JSON or database.
         """
-        pass
+        if not all(key in data for key in ["category",
+                                           "amount_limit",
+                                           "time_period",
+                                           "start_date",
+                                           "end_date",
+                                           "current_spending"]):
+            raise ValueError("Dictionary missing fields")
+        return cls(data["category"],
+                   data["amount_limit"],
+                   data["time_period"],
+                   data["start_date"],
+                   data["end_date"],
+                   data["current_spending"])
 
     def __eq__(self, other: 'Budget') -> bool:
         """
         Defines how to compare two budgets for equality.
         Two budgets might be equal if they have the same category and time period.
         """
-        pass
+        
 
     def __str__(self) -> str:
         """
