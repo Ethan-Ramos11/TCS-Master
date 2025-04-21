@@ -8,7 +8,7 @@ from category import Category
 class Budget:
     category: Category
     amount_limit: float
-    time_period: str  # "monthly", "yearly", etc.
+    time_period: str  # "monthly", "yearly", weekly.
     start_date: datetime
     end_date: Optional[datetime]
     current_spending: float = 0.0
@@ -64,7 +64,12 @@ class Budget:
         Updates budget details. Only updates provided fields.
         Others remain unchanged.
         """
-        
+        if type(new_amount) == float and new_amount > 0 and new_amount != self.amount_limit:
+            self.amount_limit = new_amount
+        if type(new_time_period) == str and new_time_period in ["monthly", "yearly", "weekly"] and new_time_period != self.time_period:
+            self.time_period = new_time_period
+        if type(new_end_date) == datetime and new_end_date != self.end_date:
+            self.end_date = new_end_date 
 
     def to_dict(self) -> dict:
         """
