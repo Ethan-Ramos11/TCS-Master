@@ -35,27 +35,27 @@ class Budget:
         Calculates how much budget is remaining.
         Returns the difference between limit and current spending.
         """
-        pass
+        return self.amount_limit - self.current_spending
 
     def get_spending_percentage(self) -> float:
         """
         Calculates what percentage of the budget has been spent.
         Returns a value between 0 and 100.
         """
-        pass
+        return round(self.current_spending/self.amount_limit, 0)
 
     def is_over_budget(self) -> bool:
         """
         Checks if the current spending exceeds the budget limit.
         """
-        pass
+        return self.current_spending > self.amount_limit
 
     def reset_budget(self) -> None:
         """
         Resets the current spending to zero.
         Useful for starting a new budget period.
         """
-        pass
+        self.current_spending = 0
 
     def update_budget(self, new_amount: Optional[float] = None,
                       new_time_period: Optional[str] = None,
@@ -64,7 +64,7 @@ class Budget:
         Updates budget details. Only updates provided fields.
         Others remain unchanged.
         """
-        pass
+        
 
     def to_dict(self) -> dict:
         """
