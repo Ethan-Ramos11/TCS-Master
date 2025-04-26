@@ -9,7 +9,7 @@ class F1DataFetcher:
         Initialize the F1 data fetcher.
         Sets up any necessary configurations or API keys.
         """
-        pass
+         
 
     def get_race_session(self, year: int, race_name: str) -> Session:
         """
@@ -22,7 +22,7 @@ class F1DataFetcher:
         Returns:
             FastF1 Session object containing race data
         """
-        pass
+        return 
 
     def get_lap_times(self, session: Session, driver: Optional[str] = None) -> List[Dict]:
         """
