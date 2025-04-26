@@ -1,5 +1,5 @@
 import sqlite3
-from .schema import SCHEMA
+from schema import SCHEMA
 
 
 def create_connection():
@@ -17,9 +17,9 @@ def convert_to_sql_columns(info):
 
 def format_foreign_keys(info):
     s = ""
-    for key, val in info["foreign_keys"]:
-        s += f"FOREIGN KEY ({key}) REFERENCES {val},"
-    return s[:-1]
+    for key, val in info["foreign_keys"].items():
+        s += f", FOREIGN KEY ({key}) REFERENCES {val}"
+    return s
 
 
 def create_tables(conn, cursor):
@@ -47,3 +47,16 @@ def validate_connection(conn):
         return True
     except sqlite3.Error:
         return False
+
+
+def main():
+    conn, cursor = create_connection()
+    if validate_connection(conn):
+        create_tables(conn, cursor)
+    else:
+        print("Failed to connect to the database")
+    conn.close()
+
+
+if __name__ == "__main__":
+    main()
