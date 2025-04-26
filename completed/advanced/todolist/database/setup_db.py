@@ -1,4 +1,5 @@
 import sqlite3
+from .schema import SCHEMA
 
 
 def create_connection():
@@ -7,5 +8,10 @@ def create_connection():
     return conn, cursor
 
 
-def create_tables():
-      
+def convert_to_sql_columns(info):
+    s = ""
+    for key, val in info.items():
+        s += f"{key} {val},"
+    return s[:-1]
+
+

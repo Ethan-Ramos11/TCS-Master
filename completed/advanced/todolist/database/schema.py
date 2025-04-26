@@ -21,7 +21,7 @@ SCHEMA = {
             "priority": "TEXT CHECK(priority IN ('high', 'medium', 'low'))"
         },
         "foreign_keys": {
-          "user_id": "users(user_id)"
+            "user_id": "users(user_id)"
         }
     }
 }
