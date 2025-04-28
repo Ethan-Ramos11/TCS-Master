@@ -28,3 +28,41 @@ def login():
             'email': user.email
         }
     })
+
+
+@auth.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    username = data.get('username')
+    email = data.get('email')
+    password = data.get('password')
+    first_name = data.get('first_name')
+    last_name = data.get('last_name')
+    if not all([username, email, password]):
+        return jsonify({'error': 'Missing fields: username, passsword, and/or email'}), 400
+
+    if User.query.filter_by(username=username).first():
+        return jsonify({'error': 'Username taken'}), 400
+    if User.query.filter_by(email=email).first():
+        return jsonify({'error': 'Email taken'}), 400
+
+    new_user = User(
+        username=username,
+        email=email,
+        first_name=first_name,
+        last_name=last_name
+    )
+    new_user.set_password(password)
+    db.session.add(new_user)
+
+    db.session.commit()
+    return jsonify({
+        'message': 'Registration successful',
+        'user': {
+            'id': new_user.user_id,
+            'username': new_user.username,
+            'email': new_user.email,
+            'first_name': new_user.first_name,
+            'last_name': new_user.last_name
+        }
+    }), 201
