@@ -19,6 +19,7 @@ class User(UserMixin, db.Model):
     password = db.Column('password', db.String(128), nullable=False)
     first_name = db.Column('first_name', db.String(80))
     last_name = db.Column('last_name', db.String(80))
+    tasks = db.relationship('Task', backref='user', lazy=True)
 
     def get_id(self):
         return str(self.user_id)
@@ -31,3 +32,15 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return f'<User {self.username}>'
+
+
+class Task(db.Model):
+    __tablename__ = 'tasks'
+
+    task_id = db.Column('task_id', db.Integer, primary_key=True)
+    user_id = db.Column('user_id', db.Integer, db.ForeignKey('users.user_id'))
+    name = db.Column('name', db.String(100), nullable=False)
+    description = db.Column('description', db.Text)
+    due_date = db.Column('due_date', db.DateTime)
+    priority = db.Column('priority', db.String(
+        10), check_constraint="priority IN ('high', 'medium','low')")
