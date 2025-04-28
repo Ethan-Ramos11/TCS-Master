@@ -40,3 +40,13 @@ class Task(db.Model):
     due_date = db.Column('due_date', db.DateTime)
     priority = db.Column('priority', db.String(
         10), check_constraint="priority IN ('high', 'medium','low')")
+
+    def to_dict(self):
+        return {
+            'task_id': self.task_id,
+            'user_id': self.user_id,
+            'name': self.name,
+            'description': self.description,
+            'due_date': self.due_date.isoformat() if self.due_date else None,
+            'priority': self.priority
+        }
