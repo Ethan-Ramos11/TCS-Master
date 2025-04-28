@@ -8,8 +8,11 @@ tasks = Blueprint('tasks', __name__)
 @tasks.route('/tasks', methods=['GET'])
 @login_required
 def get_tasks():
-    pass
-
+    tasks = Task.query.filter_by(user_id=current_user.user_id).all()
+    return jsonify({
+        'message': 'Tasks found for user',
+        'data': [task.to_dict() for task in tasks]
+    })
 # Get a single task by ID
 
 
@@ -49,7 +52,6 @@ def delete_task(task_id):
 @login_required
 def toggle_task(task_id):
     pass
-
 
 
 # Filter tasks by priority
