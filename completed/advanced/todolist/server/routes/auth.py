@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify
-from flask_login import login_user, logout_user, login_required, current_user
-from werkzeug.security import generate_password_hash
+from flask_login import login_user, logout_user, current_user
 from ..models import db, User
 
 auth = Blueprint('auth', __name__)
@@ -66,3 +65,13 @@ def register():
             'last_name': new_user.last_name
         }
     }), 201
+
+
+@auth.route('/logout', methods=['POST'])
+def logout():
+    if not current_user.is_authenticated:
+        return jsonify({'error': 'User not authenticated'}), 200
+
+    logout_user()
+
+    return jsonify({'message': 'successfully logged out'}), 200

@@ -1,10 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-import sqlite3
-from pathlib import Path
-
-DB_PATH = Path(__file__).parent.parent / 'database' / 'todo.db'
 
 db = SQLAlchemy()
 
