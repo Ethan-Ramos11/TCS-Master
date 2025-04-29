@@ -37,7 +37,8 @@ class Task(db.Model):
     user_id = db.Column('user_id', db.Integer, db.ForeignKey('users.user_id'))
     name = db.Column('name', db.String(100), nullable=False)
     description = db.Column('description', db.Text)
-    due_date = db.Column('due_date', db.DateTime)
+    due_date = db.Column('due_date', db.DateTime),
+    completed = db.Column('completed', db.Text),
     priority = db.Column('priority', db.String(
         10), check_constraint="priority IN ('high', 'medium','low')")
 
