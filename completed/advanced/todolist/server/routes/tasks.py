@@ -33,8 +33,28 @@ def get_task(task_id):
 @tasks.route('/tasks', methods=['POST'])
 @login_required
 def create_task():
-    pass
+    data = request.get_json()
+    name = data.get("name")
+    description = data.get("description")
+    due_date = data.get("due_date")
+    priority = data.get("priority")
+    if not name:
+        return jsonify({'error': 'expected a name'})
 
+    new_task = Task(
+        name=name,
+        user_id=current_user.user_id,
+        description=description,
+        due_date=due_date,
+        priority=priority
+    )
+    db.session.add(new_task)
+    db.session.commit()
+
+    return jsonify({
+        'message': 'Task successfully added',
+        'data': new_task.to_dict()
+    }), 201
 # Update an existing task
 
 
