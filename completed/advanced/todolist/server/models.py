@@ -37,8 +37,9 @@ class Task(db.Model):
     user_id = db.Column('user_id', db.Integer, db.ForeignKey('users.user_id'))
     name = db.Column('name', db.String(100), nullable=False)
     description = db.Column('description', db.Text)
-    due_date = db.Column('due_date', db.DateTime),
-    completed = db.Column('completed', db.Text),
+    due_date = db.Column('due_date', db.DateTime)
+    completed = db.Column('completed', db.Text,
+                          check_constraint="completed IN ('completed', 'incomplete')")
     priority = db.Column('priority', db.String(
         10), check_constraint="priority IN ('high', 'medium','low')")
 
@@ -49,5 +50,12 @@ class Task(db.Model):
             'name': self.name,
             'description': self.description,
             'due_date': self.due_date.isoformat() if self.due_date else None,
+            'completed': self.completed,
             'priority': self.priority
         }
+
+    def flip_completed(self):
+        if self.completed == "incomplete":
+            self.completed = "completed"
+        else:
+            self.completed = "incomplete"
