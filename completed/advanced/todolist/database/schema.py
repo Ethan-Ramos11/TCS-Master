@@ -18,6 +18,7 @@ SCHEMA = {
             "name": "TEXT NOT NULL",
             "description": "TEXT",
             "due_date": "TIMESTAMP",
+            "completed": "TEXT CHECK(completed IN ('incomplete', 'complete'))",
             "priority": "TEXT CHECK(priority IN ('high', 'medium', 'low'))"
         },
         "foreign_keys": {
