@@ -103,8 +103,18 @@ def delete_task(task_id):
 @tasks.route('/tasks/<int:task_id>/toggle', methods=['POST'])
 @login_required
 def toggle_task(task_id):
-    pass
+    task = Task.query.filter_by(task_id=task_id).first()
+    if not task:
+        return jsonify({'error': 'No task to delete'}), 404
+    if task.user_id != current_user.user_id:
+        return jsonify({'error': 'Task does not belong to the current user'}), 403
+    task.flip_completed()
 
+    db.session.commit()
+    return jsonify({
+        'message': 'Task completion status updated',
+        'data': task.to_dict()
+    })
 
 # Filter tasks by priority
 
