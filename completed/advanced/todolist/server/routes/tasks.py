@@ -13,13 +13,19 @@ def get_tasks():
         'message': 'Tasks found for user',
         'data': [task.to_dict() for task in tasks]
     })
-# Get a single task by ID
 
 
 @tasks.route('/tasks/<int:task_id>', methods=['GET'])
 @login_required
 def get_task(task_id):
-    pass
+    task = Task.query.filter_by(
+        task_id=task_id, user_id=current_user.user_id).first()
+    if not task:
+        return jsonify({'error': 'Task not found'}), 404
+    return jsonify({
+        'message': 'Task found',
+        'data': task.to_dict()
+    })
 
 # Create a new task
 
