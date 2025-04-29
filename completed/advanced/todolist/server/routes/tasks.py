@@ -85,7 +85,17 @@ def update_task(task_id):
 @tasks.route('/tasks/<int:task_id>', methods=['DELETE'])
 @login_required
 def delete_task(task_id):
-    pass
+    task = Task.query.filter_by(task_id=task_id).first()
+    if not task:
+        return jsonify({'error': 'No task to delete'}), 404
+    if task.user_id != current_user.user_id:
+        return jsonify({'error': 'Task does not belong to the current user'}), 403
+    db.session.delete(task)
+    db.session.commit()
+
+    return jsonify({
+        'message': 'successfully deleted task'
+    })
 
 # Mark task as complete/incomplete
 
