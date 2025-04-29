@@ -61,8 +61,24 @@ def create_task():
 @tasks.route('/tasks/<int:task_id>', methods=['PUT'])
 @login_required
 def update_task(task_id):
-    pass
+    task = Task.query.filter_by(task_id=task_id).first()
+    if not task:
+        return jsonify({'error': 'Task not found'}), 404
 
+    data = request.get_json()
+    if not data:
+        return jsonify({'error': 'No update data provided'}), 404
+
+    allowed_fields = ['name', 'description', 'due_date', 'priority']
+    for field in allowed_fields:
+        if field in data:
+            setattr(task, field, data[field])
+
+    db.session.commit()
+    return jsonify({
+        'message': 'Task updated successfully',
+        'data': task.to_dict()
+    })
 # Delete a task
 
 
