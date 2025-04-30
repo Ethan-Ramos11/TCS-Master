@@ -61,7 +61,8 @@ def create_task():
 @tasks.route('/tasks/<int:task_id>', methods=['PUT'])
 @login_required
 def update_task(task_id):
-    task = Task.query.filter_by(task_id=task_id).first()
+    task = Task.query.filter_by(
+        task_id=task_id, user_id=current_user.user_id).first()
     if not task:
         return jsonify({'error': 'Task not found'}), 404
 
@@ -85,16 +86,16 @@ def update_task(task_id):
 @tasks.route('/tasks/<int:task_id>', methods=['DELETE'])
 @login_required
 def delete_task(task_id):
-    task = Task.query.filter_by(task_id=task_id).first()
+    task = Task.query.filter_by(
+        task_id=task_id,
+        user_id=current_user.user_id
+    ).first()
     if not task:
-        return jsonify({'error': 'No task to delete'}), 404
-    if task.user_id != current_user.user_id:
-        return jsonify({'error': 'Task does not belong to the current user'}), 403
+        return jsonify({'error': 'Task not found'}), 404
     db.session.delete(task)
     db.session.commit()
-
     return jsonify({
-        'message': 'successfully deleted task'
+        'message': 'Task deleted successfully'
     })
 
 # Mark task as complete/incomplete
@@ -103,13 +104,13 @@ def delete_task(task_id):
 @tasks.route('/tasks/<int:task_id>/toggle', methods=['POST'])
 @login_required
 def toggle_task(task_id):
-    task = Task.query.filter_by(task_id=task_id).first()
+    task = Task.query.filter_by(
+        task_id=task_id,
+        user_id=current_user.user_id
+    ).first()
     if not task:
-        return jsonify({'error': 'No task to delete'}), 404
-    if task.user_id != current_user.user_id:
-        return jsonify({'error': 'Task does not belong to the current user'}), 403
+        return jsonify({'error': 'Task not found'}), 404
     task.flip_completed()
-
     db.session.commit()
     return jsonify({
         'message': 'Task completion status updated',
@@ -122,17 +123,33 @@ def toggle_task(task_id):
 @tasks.route('/tasks/priority/<string:priority>', methods=['GET'])
 @login_required
 def get_tasks_by_priority(priority):
-    pass
+    tasks = Task.query.filter_by(
+        priority=priority,
+        user_id=current_user.user_id
+    ).all()
+    return jsonify({
+        'message': f'Tasks with priority {priority} found',
+        'data': [task.to_dict() for task in tasks]
+    })
 
-# Get tasks due before/after a specific date
+# Get tasks due before a specific date
 
 
 @tasks.route('/tasks/due/<string:date>', methods=['GET'])
 @login_required
 def get_tasks_by_due_date(date):
-    pass
-
-# Search tasks by name or description
+    try:
+        tasks = Task.query.filter(
+            Task.due_date < date,
+            Task.user_id == current_user.user_id
+        ).all()
+        return jsonify({
+            'message': f'Tasks due by {date}',
+            'data': [task.to_dict() for task in tasks]
+        })
+    except Exception as e:
+        return jsonify({'error': 'Invalid date format or database error'}), 400
+    # Search tasks by name or description
 
 
 @tasks.route('/tasks/search', methods=['GET'])
@@ -146,12 +163,4 @@ def search_tasks():
 @tasks.route('/tasks/sorted/<string:sort_by>', methods=['GET'])
 @login_required
 def get_sorted_tasks(sort_by):
-    pass
-
-# Bulk update task priorities
-
-
-@tasks.route('/tasks/bulk-priority', methods=['PUT'])
-@login_required
-def bulk_update_priority():
     pass
