@@ -161,7 +161,7 @@ def search_tasks():
         return jsonify({'error': 'Search term is required'}), 400
 
     tasks = Task.query.filter(
-        Task.user_id == current_user.id,
+        Task.user_id == current_user.user_id,
         or_(
             Task.name.ilike(f'%{search_term}%'),
             Task.description.ilike(f'%{search_term}%')
@@ -170,10 +170,25 @@ def search_tasks():
     return jsonify({
         'message': 'Tasks retrieved',
         'data': [task.to_dict() for task in tasks]})
+
     # Get tasks sorted by different criteria
 
 
 @tasks.route('/tasks/sorted/<string:sort_by>', methods=['GET'])
 @login_required
-def get_sorted_tasks(sort_by):
-    pass
+def get_sorted_tasks(sort_by='date'):
+    sort_fields = {
+        'date': Task.due_date,
+        'priority': Task.priority,
+        'name': Task.name,
+        'completed': Task.completed
+    }
+
+    sort_field = sort_fields.get(sort_by, Task.due_date)
+
+    tasks = Task.query.filter_by(
+        user_id=current_user.user_id).order_by(sort_field).all()
+    return jsonify({
+        'message': f'Tasks sorted by {sort_field}',
+        'data': [task.to_dict() for task in tasks]
+    })
