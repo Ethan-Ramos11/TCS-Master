@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
 from ..models import db, Task
-
+from sqlalchemy import or_
 tasks = Blueprint('tasks', __name__)
 
 
@@ -149,15 +149,28 @@ def get_tasks_by_due_date(date):
         })
     except Exception as e:
         return jsonify({'error': 'Invalid date format or database error'}), 400
+
     # Search tasks by name or description
 
 
 @tasks.route('/tasks/search', methods=['GET'])
 @login_required
 def search_tasks():
-    pass
+    search_term = request.args.get('q', '')
+    if not search_term:
+        return jsonify({'error': 'Search term is required'}), 400
 
-# Get tasks sorted by different criteria
+    tasks = Task.query.filter(
+        Task.user_id == current_user.id,
+        or_(
+            Task.name.ilike(f'%{search_term}%'),
+            Task.description.ilike(f'%{search_term}%')
+        )
+    ).all()
+    return jsonify({
+        'message': 'Tasks retrieved',
+        'data': [task.to_dict() for task in tasks]})
+    # Get tasks sorted by different criteria
 
 
 @tasks.route('/tasks/sorted/<string:sort_by>', methods=['GET'])
