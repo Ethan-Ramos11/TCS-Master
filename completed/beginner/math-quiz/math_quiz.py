@@ -27,6 +27,11 @@ def create_question():
     return [num_one, num_two, operation]
 
 
+def display_question(question_info):
+    question_string = f'{question_info[0]} {question_info[2]} {question_info[1]} = ?'
+    return question_string
+
+
 def check_answer(user_answer, correct_answer):
     pass
 
