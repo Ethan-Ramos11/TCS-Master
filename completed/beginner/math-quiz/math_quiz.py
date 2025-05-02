@@ -8,7 +8,9 @@ def pick_numbers():
 
 
 def pick_operation():
-    pass
+    OPERATIONS = ['+', '-', '*', '/']
+    operation = random.choice(OPERATIONS)
+    return operation
 
 
 def create_question():
