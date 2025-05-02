@@ -8,6 +8,46 @@ tasks = Blueprint('tasks', __name__)
 @tasks.route('/tasks', methods=['GET'])
 @login_required
 def get_tasks():
+    """
+    Get all tasks for the current user.
+
+    ---
+    tags:
+      - Tasks
+    responses:
+      200:
+        description: List of tasks retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Tasks found for user
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      task_id:
+                        type: integer
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      due_date:
+                        type: string
+                        format: date
+                      priority:
+                        type: string
+                      completed:
+                        type: boolean
+                      user_id:
+                        type: integer
+      401:
+        description: User not authenticated
+    """
     tasks = Task.query.filter_by(user_id=current_user.user_id).all()
     return jsonify({
         'message': 'Tasks found for user',
@@ -18,6 +58,53 @@ def get_tasks():
 @tasks.route('/tasks/<int:task_id>', methods=['GET'])
 @login_required
 def get_task(task_id):
+    """
+    Get a specific task by ID.
+
+    ---
+    tags:
+      - Tasks
+    parameters:
+      - name: task_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID of the task to retrieve
+    responses:
+      200:
+        description: Task retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Task found
+                data:
+                  type: object
+                  properties:
+                    task_id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    due_date:
+                      type: string
+                      format: date
+                    priority:
+                      type: string
+                    completed:
+                      type: boolean
+                    user_id:
+                      type: integer
+      401:
+        description: User not authenticated
+      404:
+        description: Task not found
+    """
     task = Task.query.filter_by(
         task_id=task_id, user_id=current_user.user_id).first()
     if not task:
@@ -33,6 +120,69 @@ def get_task(task_id):
 @tasks.route('/tasks', methods=['POST'])
 @login_required
 def create_task():
+    """
+    Create a new task.
+
+    ---
+    tags:
+      - Tasks
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+                description: Name of the task
+              description:
+                type: string
+                description: Detailed description of the task
+              due_date:
+                type: string
+                format: date
+                description: Due date of the task (YYYY-MM-DD)
+              priority:
+                type: string
+                description: Priority level of the task
+                enum: [high, medium, low]
+    responses:
+      201:
+        description: Task created successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Task successfully added
+                data:
+                  type: object
+                  properties:
+                    task_id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    due_date:
+                      type: string
+                      format: date
+                    priority:
+                      type: string
+                    completed:
+                      type: boolean
+                    user_id:
+                      type: integer
+      400:
+        description: Invalid input data
+      401:
+        description: User not authenticated
+    """
     data = request.get_json()
     name = data.get("name")
     description = data.get("description")
@@ -61,6 +211,76 @@ def create_task():
 @tasks.route('/tasks/<int:task_id>', methods=['PUT'])
 @login_required
 def update_task(task_id):
+    """
+    Update an existing task.
+
+    ---
+    tags:
+      - Tasks
+    parameters:
+      - name: task_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID of the task to update
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: New name of the task
+              description:
+                type: string
+                description: New description of the task
+              due_date:
+                type: string
+                format: date
+                description: New due date of the task (YYYY-MM-DD)
+              priority:
+                type: string
+                description: New priority level of the task
+                enum: [high, medium, low]
+    responses:
+      200:
+        description: Task updated successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Task updated successfully
+                data:
+                  type: object
+                  properties:
+                    task_id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    due_date:
+                      type: string
+                      format: date
+                    priority:
+                      type: string
+                    completed:
+                      type: boolean
+                    user_id:
+                      type: integer
+      400:
+        description: Invalid input data
+      401:
+        description: User not authenticated
+      404:
+        description: Task not found
+    """
     task = Task.query.filter_by(
         task_id=task_id, user_id=current_user.user_id).first()
     if not task:
@@ -86,6 +306,35 @@ def update_task(task_id):
 @tasks.route('/tasks/<int:task_id>', methods=['DELETE'])
 @login_required
 def delete_task(task_id):
+    """
+    Delete a task.
+
+    ---
+    tags:
+      - Tasks
+    parameters:
+      - name: task_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID of the task to delete
+    responses:
+      200:
+        description: Task deleted successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Task deleted successfully
+      401:
+        description: User not authenticated
+      404:
+        description: Task not found
+    """
     task = Task.query.filter_by(
         task_id=task_id,
         user_id=current_user.user_id
@@ -104,6 +353,53 @@ def delete_task(task_id):
 @tasks.route('/tasks/<int:task_id>/toggle', methods=['POST'])
 @login_required
 def toggle_task(task_id):
+    """
+    Toggle the completion status of a task.
+
+    ---
+    tags:
+      - Tasks
+    parameters:
+      - name: task_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID of the task to toggle
+    responses:
+      200:
+        description: Task completion status updated
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Task completion status updated
+                data:
+                  type: object
+                  properties:
+                    task_id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    due_date:
+                      type: string
+                      format: date
+                    priority:
+                      type: string
+                    completed:
+                      type: boolean
+                    user_id:
+                      type: integer
+      401:
+        description: User not authenticated
+      404:
+        description: Task not found
+    """
     task = Task.query.filter_by(
         task_id=task_id,
         user_id=current_user.user_id
@@ -123,6 +419,54 @@ def toggle_task(task_id):
 @tasks.route('/tasks/priority/<string:priority>', methods=['GET'])
 @login_required
 def get_tasks_by_priority(priority):
+    """
+    Get tasks filtered by priority level.
+
+    ---
+    tags:
+      - Tasks
+    parameters:
+      - name: priority
+        in: path
+        required: true
+        schema:
+          type: string
+          enum: [high, medium, low]
+        description: Priority level to filter tasks by
+    responses:
+      200:
+        description: Tasks retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Tasks with priority high found
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      task_id:
+                        type: integer
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      due_date:
+                        type: string
+                        format: date
+                      priority:
+                        type: string
+                      completed:
+                        type: boolean
+                      user_id:
+                        type: integer
+      401:
+        description: User not authenticated
+    """
     tasks = Task.query.filter_by(
         priority=priority,
         user_id=current_user.user_id
@@ -138,6 +482,56 @@ def get_tasks_by_priority(priority):
 @tasks.route('/tasks/due/<string:date>', methods=['GET'])
 @login_required
 def get_tasks_by_due_date(date):
+    """
+    Get tasks due before a specific date.
+
+    ---
+    tags:
+      - Tasks
+    parameters:
+      - name: date
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date
+        description: Date to filter tasks by (YYYY-MM-DD)
+    responses:
+      200:
+        description: Tasks retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Tasks due by 2023-12-31
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      task_id:
+                        type: integer
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      due_date:
+                        type: string
+                        format: date
+                      priority:
+                        type: string
+                      completed:
+                        type: boolean
+                      user_id:
+                        type: integer
+      400:
+        description: Invalid date format
+      401:
+        description: User not authenticated
+    """
     try:
         tasks = Task.query.filter(
             Task.due_date < date,
@@ -156,6 +550,55 @@ def get_tasks_by_due_date(date):
 @tasks.route('/tasks/search', methods=['GET'])
 @login_required
 def search_tasks():
+    """
+    Search tasks by name or description.
+
+    ---
+    tags:
+      - Tasks
+    parameters:
+      - name: q
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Search term to look for in task names and descriptions
+    responses:
+      200:
+        description: Tasks retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Tasks retrieved
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      task_id:
+                        type: integer
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      due_date:
+                        type: string
+                        format: date
+                      priority:
+                        type: string
+                      completed:
+                        type: boolean
+                      user_id:
+                        type: integer
+      400:
+        description: Search term is required
+      401:
+        description: User not authenticated
+    """
     search_term = request.args.get('q', '')
     if not search_term:
         return jsonify({'error': 'Search term is required'}), 400
@@ -177,6 +620,54 @@ def search_tasks():
 @tasks.route('/tasks/sorted/<string:sort_by>', methods=['GET'])
 @login_required
 def get_sorted_tasks(sort_by='date'):
+    """
+    Get tasks sorted by different criteria.
+
+    ---
+    tags:
+      - Tasks
+    parameters:
+      - name: sort_by
+        in: path
+        required: true
+        schema:
+          type: string
+          enum: [date, priority, name, completed]
+        description: Field to sort tasks by
+    responses:
+      200:
+        description: Tasks retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Tasks sorted by due_date
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      task_id:
+                        type: integer
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      due_date:
+                        type: string
+                        format: date
+                      priority:
+                        type: string
+                      completed:
+                        type: boolean
+                      user_id:
+                        type: integer
+      401:
+        description: User not authenticated
+    """
     sort_fields = {
         'date': Task.due_date,
         'priority': Task.priority,
