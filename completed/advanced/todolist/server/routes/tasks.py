@@ -1,12 +1,29 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from ..models import db, Task
 from sqlalchemy import or_
+
 tasks = Blueprint('tasks', __name__)
+
+# Initialize the limiter
+limiter = Limiter(
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"]
+)
+
+# Apply rate limits to all routes
+
+
+@tasks.before_request
+def before_request():
+    limiter.check()
 
 
 @tasks.route('/tasks', methods=['GET'])
 @login_required
+@limiter.limit("10 per minute")  # More strict limit for this endpoint
 def get_tasks():
     """
     Get all tasks for the current user.
@@ -47,6 +64,8 @@ def get_tasks():
                         type: integer
       401:
         description: User not authenticated
+      429:
+        description: Too many requests
     """
     tasks = Task.query.filter_by(user_id=current_user.user_id).all()
     return jsonify({
@@ -57,6 +76,7 @@ def get_tasks():
 
 @tasks.route('/tasks/<int:task_id>', methods=['GET'])
 @login_required
+@limiter.limit("20 per minute")
 def get_task(task_id):
     """
     Get a specific task by ID.
@@ -104,6 +124,8 @@ def get_task(task_id):
         description: User not authenticated
       404:
         description: Task not found
+      429:
+        description: Too many requests
     """
     task = Task.query.filter_by(
         task_id=task_id, user_id=current_user.user_id).first()
@@ -119,6 +141,7 @@ def get_task(task_id):
 
 @tasks.route('/tasks', methods=['POST'])
 @login_required
+@limiter.limit("5 per minute")  # Stricter limit for POST requests
 def create_task():
     """
     Create a new task.
@@ -182,6 +205,8 @@ def create_task():
         description: Invalid input data
       401:
         description: User not authenticated
+      429:
+        description: Too many requests
     """
     data = request.get_json()
     name = data.get("name")
@@ -210,6 +235,7 @@ def create_task():
 
 @tasks.route('/tasks/<int:task_id>', methods=['PUT'])
 @login_required
+@limiter.limit("10 per minute")
 def update_task(task_id):
     """
     Update an existing task.
@@ -280,6 +306,8 @@ def update_task(task_id):
         description: User not authenticated
       404:
         description: Task not found
+      429:
+        description: Too many requests
     """
     task = Task.query.filter_by(
         task_id=task_id, user_id=current_user.user_id).first()
@@ -305,6 +333,7 @@ def update_task(task_id):
 
 @tasks.route('/tasks/<int:task_id>', methods=['DELETE'])
 @login_required
+@limiter.limit("5 per minute")  # Stricter limit for DELETE requests
 def delete_task(task_id):
     """
     Delete a task.
@@ -334,6 +363,8 @@ def delete_task(task_id):
         description: User not authenticated
       404:
         description: Task not found
+      429:
+        description: Too many requests
     """
     task = Task.query.filter_by(
         task_id=task_id,
@@ -352,6 +383,7 @@ def delete_task(task_id):
 
 @tasks.route('/tasks/<int:task_id>/toggle', methods=['POST'])
 @login_required
+@limiter.limit("20 per minute")
 def toggle_task(task_id):
     """
     Toggle the completion status of a task.
@@ -399,6 +431,8 @@ def toggle_task(task_id):
         description: User not authenticated
       404:
         description: Task not found
+      429:
+        description: Too many requests
     """
     task = Task.query.filter_by(
         task_id=task_id,
@@ -418,6 +452,7 @@ def toggle_task(task_id):
 
 @tasks.route('/tasks/priority/<string:priority>', methods=['GET'])
 @login_required
+@limiter.limit("10 per minute")
 def get_tasks_by_priority(priority):
     """
     Get tasks filtered by priority level.
@@ -466,6 +501,8 @@ def get_tasks_by_priority(priority):
                         type: integer
       401:
         description: User not authenticated
+      429:
+        description: Too many requests
     """
     tasks = Task.query.filter_by(
         priority=priority,
@@ -481,6 +518,7 @@ def get_tasks_by_priority(priority):
 
 @tasks.route('/tasks/due/<string:date>', methods=['GET'])
 @login_required
+@limiter.limit("10 per minute")
 def get_tasks_by_due_date(date):
     """
     Get tasks due before a specific date.
@@ -531,6 +569,8 @@ def get_tasks_by_due_date(date):
         description: Invalid date format
       401:
         description: User not authenticated
+      429:
+        description: Too many requests
     """
     try:
         tasks = Task.query.filter(
@@ -549,6 +589,7 @@ def get_tasks_by_due_date(date):
 
 @tasks.route('/tasks/search', methods=['GET'])
 @login_required
+@limiter.limit("10 per minute")
 def search_tasks():
     """
     Search tasks by name or description.
@@ -598,6 +639,8 @@ def search_tasks():
         description: Search term is required
       401:
         description: User not authenticated
+      429:
+        description: Too many requests
     """
     search_term = request.args.get('q', '')
     if not search_term:
@@ -619,6 +662,7 @@ def search_tasks():
 
 @tasks.route('/tasks/sorted/<string:sort_by>', methods=['GET'])
 @login_required
+@limiter.limit("10 per minute")
 def get_sorted_tasks(sort_by='date'):
     """
     Get tasks sorted by different criteria.
@@ -667,6 +711,8 @@ def get_sorted_tasks(sort_by='date'):
                         type: integer
       401:
         description: User not authenticated
+      429:
+        description: Too many requests
     """
     sort_fields = {
         'date': Task.due_date,
