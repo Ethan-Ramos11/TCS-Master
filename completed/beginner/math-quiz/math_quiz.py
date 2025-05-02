@@ -37,4 +37,13 @@ def check_answer(user_answer, correct_answer):
 
 
 def get_user_input(question):
-    pass
+    while True:
+        try:
+            user_input = input(f'What is {question} ')
+            if not user_input.strip():
+                print("Please enter a number")
+                continue
+            num = int(user_input)
+            return num
+        except ValueError:
+            print("Invalid input. Please enter a valid integer")
