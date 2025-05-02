@@ -33,7 +33,7 @@ def display_question(question_info):
 
 
 def check_answer(user_answer, correct_answer):
-    pass
+    return user_answer == correct_answer
 
 
 def get_user_input(question):
