@@ -23,49 +23,15 @@ def before_request():
 
 @tasks.route('/tasks', methods=['GET'])
 @login_required
-@limiter.limit("10 per minute")  # More strict limit for this endpoint
+@limiter.limit("10 per minute")
 def get_tasks():
     """
     Get all tasks for the current user.
-
     ---
-    tags:
-      - Tasks
     responses:
-      200:
-        description: List of tasks retrieved successfully
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  example: Tasks found for user
-                data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      task_id:
-                        type: integer
-                      name:
-                        type: string
-                      description:
-                        type: string
-                      due_date:
-                        type: string
-                        format: date
-                      priority:
-                        type: string
-                      completed:
-                        type: boolean
-                      user_id:
-                        type: integer
-      401:
-        description: User not authenticated
-      429:
-        description: Too many requests
+      200: List of tasks
+      401: Not authenticated
+      429: Too many requests
     """
     tasks = Task.query.filter_by(user_id=current_user.user_id).all()
     return jsonify({
@@ -80,52 +46,17 @@ def get_tasks():
 def get_task(task_id):
     """
     Get a specific task by ID.
-
     ---
-    tags:
-      - Tasks
     parameters:
       - name: task_id
         in: path
         required: true
-        schema:
-          type: integer
-        description: ID of the task to retrieve
+        type: integer
     responses:
-      200:
-        description: Task retrieved successfully
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  example: Task found
-                data:
-                  type: object
-                  properties:
-                    task_id:
-                      type: integer
-                    name:
-                      type: string
-                    description:
-                      type: string
-                    due_date:
-                      type: string
-                      format: date
-                    priority:
-                      type: string
-                    completed:
-                      type: boolean
-                    user_id:
-                      type: integer
-      401:
-        description: User not authenticated
-      404:
-        description: Task not found
-      429:
-        description: Too many requests
+      200: Task found
+      401: Not authenticated
+      404: Task not found
+      429: Too many requests
     """
     task = Task.query.filter_by(
         task_id=task_id, user_id=current_user.user_id).first()
@@ -141,72 +72,27 @@ def get_task(task_id):
 
 @tasks.route('/tasks', methods=['POST'])
 @login_required
-@limiter.limit("5 per minute")  # Stricter limit for POST requests
+@limiter.limit("5 per minute")
 def create_task():
     """
     Create a new task.
-
     ---
-    tags:
-      - Tasks
     requestBody:
       required: true
       content:
         application/json:
           schema:
-            type: object
-            required:
-              - name
+            required: [name]
             properties:
-              name:
-                type: string
-                description: Name of the task
-              description:
-                type: string
-                description: Detailed description of the task
-              due_date:
-                type: string
-                format: date
-                description: Due date of the task (YYYY-MM-DD)
-              priority:
-                type: string
-                description: Priority level of the task
-                enum: [high, medium, low]
+              name: string
+              description: string
+              due_date: string (YYYY-MM-DD)
+              priority: string (high/medium/low)
     responses:
-      201:
-        description: Task created successfully
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  example: Task successfully added
-                data:
-                  type: object
-                  properties:
-                    task_id:
-                      type: integer
-                    name:
-                      type: string
-                    description:
-                      type: string
-                    due_date:
-                      type: string
-                      format: date
-                    priority:
-                      type: string
-                    completed:
-                      type: boolean
-                    user_id:
-                      type: integer
-      400:
-        description: Invalid input data
-      401:
-        description: User not authenticated
-      429:
-        description: Too many requests
+      201: Task created
+      400: Invalid input
+      401: Not authenticated
+      429: Too many requests
     """
     data = request.get_json()
     name = data.get("name")
@@ -239,75 +125,27 @@ def create_task():
 def update_task(task_id):
     """
     Update an existing task.
-
     ---
-    tags:
-      - Tasks
     parameters:
       - name: task_id
         in: path
         required: true
-        schema:
-          type: integer
-        description: ID of the task to update
+        type: integer
     requestBody:
-      required: true
       content:
         application/json:
           schema:
-            type: object
             properties:
-              name:
-                type: string
-                description: New name of the task
-              description:
-                type: string
-                description: New description of the task
-              due_date:
-                type: string
-                format: date
-                description: New due date of the task (YYYY-MM-DD)
-              priority:
-                type: string
-                description: New priority level of the task
-                enum: [high, medium, low]
+              name: string
+              description: string
+              due_date: string (YYYY-MM-DD)
+              priority: string (high/medium/low)
     responses:
-      200:
-        description: Task updated successfully
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  example: Task updated successfully
-                data:
-                  type: object
-                  properties:
-                    task_id:
-                      type: integer
-                    name:
-                      type: string
-                    description:
-                      type: string
-                    due_date:
-                      type: string
-                      format: date
-                    priority:
-                      type: string
-                    completed:
-                      type: boolean
-                    user_id:
-                      type: integer
-      400:
-        description: Invalid input data
-      401:
-        description: User not authenticated
-      404:
-        description: Task not found
-      429:
-        description: Too many requests
+      200: Task updated
+      400: Invalid input
+      401: Not authenticated
+      404: Task not found
+      429: Too many requests
     """
     task = Task.query.filter_by(
         task_id=task_id, user_id=current_user.user_id).first()
@@ -333,38 +171,21 @@ def update_task(task_id):
 
 @tasks.route('/tasks/<int:task_id>', methods=['DELETE'])
 @login_required
-@limiter.limit("5 per minute")  # Stricter limit for DELETE requests
+@limiter.limit("5 per minute")
 def delete_task(task_id):
     """
     Delete a task.
-
     ---
-    tags:
-      - Tasks
     parameters:
       - name: task_id
         in: path
         required: true
-        schema:
-          type: integer
-        description: ID of the task to delete
+        type: integer
     responses:
-      200:
-        description: Task deleted successfully
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  example: Task deleted successfully
-      401:
-        description: User not authenticated
-      404:
-        description: Task not found
-      429:
-        description: Too many requests
+      200: Task deleted
+      401: Not authenticated
+      404: Task not found
+      429: Too many requests
     """
     task = Task.query.filter_by(
         task_id=task_id,
@@ -386,53 +207,18 @@ def delete_task(task_id):
 @limiter.limit("20 per minute")
 def toggle_task(task_id):
     """
-    Toggle the completion status of a task.
-
+    Toggle task completion status.
     ---
-    tags:
-      - Tasks
     parameters:
       - name: task_id
         in: path
         required: true
-        schema:
-          type: integer
-        description: ID of the task to toggle
+        type: integer
     responses:
-      200:
-        description: Task completion status updated
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  example: Task completion status updated
-                data:
-                  type: object
-                  properties:
-                    task_id:
-                      type: integer
-                    name:
-                      type: string
-                    description:
-                      type: string
-                    due_date:
-                      type: string
-                      format: date
-                    priority:
-                      type: string
-                    completed:
-                      type: boolean
-                    user_id:
-                      type: integer
-      401:
-        description: User not authenticated
-      404:
-        description: Task not found
-      429:
-        description: Too many requests
+      200: Status updated
+      401: Not authenticated
+      404: Task not found
+      429: Too many requests
     """
     task = Task.query.filter_by(
         task_id=task_id,
@@ -455,54 +241,18 @@ def toggle_task(task_id):
 @limiter.limit("10 per minute")
 def get_tasks_by_priority(priority):
     """
-    Get tasks filtered by priority level.
-
+    Get tasks by priority level.
     ---
-    tags:
-      - Tasks
     parameters:
       - name: priority
         in: path
         required: true
-        schema:
-          type: string
-          enum: [high, medium, low]
-        description: Priority level to filter tasks by
+        type: string
+        enum: [high, medium, low]
     responses:
-      200:
-        description: Tasks retrieved successfully
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  example: Tasks with priority high found
-                data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      task_id:
-                        type: integer
-                      name:
-                        type: string
-                      description:
-                        type: string
-                      due_date:
-                        type: string
-                        format: date
-                      priority:
-                        type: string
-                      completed:
-                        type: boolean
-                      user_id:
-                        type: integer
-      401:
-        description: User not authenticated
-      429:
-        description: Too many requests
+      200: Tasks found
+      401: Not authenticated
+      429: Too many requests
     """
     tasks = Task.query.filter_by(
         priority=priority,
@@ -521,56 +271,19 @@ def get_tasks_by_priority(priority):
 @limiter.limit("10 per minute")
 def get_tasks_by_due_date(date):
     """
-    Get tasks due before a specific date.
-
+    Get tasks due before date.
     ---
-    tags:
-      - Tasks
     parameters:
       - name: date
         in: path
         required: true
-        schema:
-          type: string
-          format: date
-        description: Date to filter tasks by (YYYY-MM-DD)
+        type: string
+        format: date
     responses:
-      200:
-        description: Tasks retrieved successfully
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  example: Tasks due by 2023-12-31
-                data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      task_id:
-                        type: integer
-                      name:
-                        type: string
-                      description:
-                        type: string
-                      due_date:
-                        type: string
-                        format: date
-                      priority:
-                        type: string
-                      completed:
-                        type: boolean
-                      user_id:
-                        type: integer
-      400:
-        description: Invalid date format
-      401:
-        description: User not authenticated
-      429:
-        description: Too many requests
+      200: Tasks found
+      400: Invalid date
+      401: Not authenticated
+      429: Too many requests
     """
     try:
         tasks = Task.query.filter(
@@ -592,55 +305,18 @@ def get_tasks_by_due_date(date):
 @limiter.limit("10 per minute")
 def search_tasks():
     """
-    Search tasks by name or description.
-
+    Search tasks by name/description.
     ---
-    tags:
-      - Tasks
     parameters:
       - name: q
         in: query
         required: true
-        schema:
-          type: string
-        description: Search term to look for in task names and descriptions
+        type: string
     responses:
-      200:
-        description: Tasks retrieved successfully
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  example: Tasks retrieved
-                data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      task_id:
-                        type: integer
-                      name:
-                        type: string
-                      description:
-                        type: string
-                      due_date:
-                        type: string
-                        format: date
-                      priority:
-                        type: string
-                      completed:
-                        type: boolean
-                      user_id:
-                        type: integer
-      400:
-        description: Search term is required
-      401:
-        description: User not authenticated
-      429:
-        description: Too many requests
+      200: Tasks found
+      400: Missing search term
+      401: Not authenticated
+      429: Too many requests
     """
     search_term = request.args.get('q', '')
     if not search_term:
@@ -665,54 +341,18 @@ def search_tasks():
 @limiter.limit("10 per minute")
 def get_sorted_tasks(sort_by='date'):
     """
-    Get tasks sorted by different criteria.
-
+    Get tasks sorted by field.
     ---
-    tags:
-      - Tasks
     parameters:
       - name: sort_by
         in: path
         required: true
-        schema:
-          type: string
-          enum: [date, priority, name, completed]
-        description: Field to sort tasks by
+        type: string
+        enum: [date, priority, name, completed]
     responses:
-      200:
-        description: Tasks retrieved successfully
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  example: Tasks sorted by due_date
-                data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      task_id:
-                        type: integer
-                      name:
-                        type: string
-                      description:
-                        type: string
-                      due_date:
-                        type: string
-                        format: date
-                      priority:
-                        type: string
-                      completed:
-                        type: boolean
-                      user_id:
-                        type: integer
-      401:
-        description: User not authenticated
-      429:
-        description: Too many requests
+      200: Tasks found
+      401: Not authenticated
+      429: Too many requests
     """
     sort_fields = {
         'date': Task.due_date,
