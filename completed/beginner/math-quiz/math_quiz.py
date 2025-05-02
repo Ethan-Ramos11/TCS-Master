@@ -13,8 +13,18 @@ def pick_operation():
     return operation
 
 
+def valid_division(num_one, num_two):
+    return num_one % num_two == 0
+
+
 def create_question():
-    pass
+    operation = pick_operation()
+    num_one, num_two = pick_numbers()
+
+    if operation == '/':
+        while not valid_division(num_one, num_two):
+            num_one, num_two = pick_numbers()
+    return [num_one, num_two, operation]
 
 
 def check_answer(user_answer, correct_answer):
