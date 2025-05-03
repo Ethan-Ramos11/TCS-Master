@@ -60,3 +60,24 @@ def get_right_answer(question_info):
     else:
         return num_one // num_two
 
+
+def main():
+    print("Welcome to the Math Quiz!")
+    print("You will be asked 10 math questions to solve")
+    score = 0
+    for i in range(10):
+        print(f"\nQuestion {i + 1}:")
+        question_info = create_question()
+        question = display_question
+        correct_answer = get_right_answer(question_info)
+
+        user_answer = get_user_input(question)
+
+        if check_answer(user_answer, correct_answer):
+            print("Correct!")
+            score += 1
+        else:
+            print(f'Incorrect, the correct answer was {correct_answer}')
+
+    print(f'\nQuiz complete! Your score: {score}/10')
+    
