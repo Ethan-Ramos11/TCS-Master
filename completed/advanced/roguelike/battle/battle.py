@@ -58,7 +58,7 @@ class Battle:
 
     def add_to_battle_log(self, message: str) -> None:
         """Add a message to the battle log"""
-        pass
+        self.battle_log.append(message)
 
     def get_battle_log(self) -> List[str]:
         """Return the current battle log"""
