@@ -61,7 +61,7 @@ class Character:
 
     def attack(self, target: 'Character') -> int:
         """TODO: Calculate damage based on attack stat, handle critical hits"""
-        
+        pass
 
     def use_mana(self, amount: int) -> bool:
         if self.current_mana < amount:
