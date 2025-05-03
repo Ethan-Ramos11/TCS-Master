@@ -68,7 +68,7 @@ def main():
     for i in range(10):
         print(f"\nQuestion {i + 1}:")
         question_info = create_question()
-        question = display_question
+        question = display_question()
         correct_answer = get_right_answer(question_info)
 
         user_answer = get_user_input(question)
@@ -80,4 +80,7 @@ def main():
             print(f'Incorrect, the correct answer was {correct_answer}')
 
     print(f'\nQuiz complete! Your score: {score}/10')
-    
+
+
+if __name__ == "__main__":
+    main()
