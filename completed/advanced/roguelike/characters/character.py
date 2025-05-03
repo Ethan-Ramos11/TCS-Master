@@ -49,7 +49,6 @@ class Character:
             return True
 
     def heal(self, amount: int) -> int:
-        """TODO: Restore HP up to max_hp, apply healing modifiers"""
         if amount < 0:
             return 0
         if self.hp + amount >= self.max_hp:
@@ -62,11 +61,13 @@ class Character:
 
     def attack(self, target: 'Character') -> int:
         """TODO: Calculate damage based on attack stat, handle critical hits"""
-        pass
+        
 
     def use_mana(self, amount: int) -> bool:
-        """TODO: Attempt to use mana, return success status"""
-        pass
+        if self.current_mana < amount:
+            return False
+        self.current_mana -= amount
+        return True
 
     # Status and Progression
     def gain_exp(self, amount: int) -> bool:
