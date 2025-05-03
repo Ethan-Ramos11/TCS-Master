@@ -68,7 +68,7 @@ def main():
     for i in range(10):
         print(f"\nQuestion {i + 1}:")
         question_info = create_question()
-        question = display_question()
+        question = display_question(question_info)
         correct_answer = get_right_answer(question_info)
 
         user_answer = get_user_input(question)
