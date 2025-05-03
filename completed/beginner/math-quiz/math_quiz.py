@@ -47,3 +47,16 @@ def get_user_input(question):
             return num
         except ValueError:
             print("Invalid input. Please enter a valid integer")
+
+
+def get_right_answer(question_info):
+    num_one, num_two, operation = question_info[0], question_info[1], question_info[2]
+    if operation == "+":
+        return num_one + num_two
+    elif operation == "-":
+        return num_one - num_two
+    elif operation == "*":
+        return num_one * num_two
+    else:
+        return num_one // num_two
+
