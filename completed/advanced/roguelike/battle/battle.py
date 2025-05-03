@@ -37,7 +37,12 @@ class Battle:
 
     def check_battle_end(self) -> bool:
         """Check if battle conditions are met for ending"""
-        pass
+        if not self.player.is_alive():
+            return True
+        for character in self.enemies:
+            if character.is_alive():
+                return False
+        return True
 
     def handle_character_death(self, character: Character) -> None:
         """Process character death and remove from battle"""
