@@ -1,6 +1,17 @@
 import random
 
 
+def get_num_range(difficulty):
+    if difficulty == 'easy':
+        return 0, 20
+    elif difficulty == 'medium':
+        return 0, 50
+    elif difficulty == 'hard':
+        return 0, 1000
+    else:
+        return -1
+
+
 def pick_numbers():
     """Generate two random numbers between 1 and 100.
 
