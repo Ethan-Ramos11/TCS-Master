@@ -12,14 +12,14 @@ def get_num_range(difficulty):
         return -1
 
 
-def pick_numbers():
+def pick_numbers(lower_num, upper_num):
     """Generate two random numbers between 1 and 100.
 
     Returns:
         tuple: A tuple containing two random integers between 1 and 100.
     """
-    num_one = random.randint(1, 100)
-    num_two = random.randint(1, 100)
+    num_one = random.randint(lower_num, upper_num)
+    num_two = random.randint(lower_num, upper_num)
     return num_one, num_two
 
 
