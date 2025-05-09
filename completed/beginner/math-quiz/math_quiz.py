@@ -13,10 +13,14 @@ def get_num_range(difficulty):
 
 
 def pick_numbers(lower_num, upper_num):
-    """Generate two random numbers between 1 and 100.
+    """Generate two random numbers between the specified range.
+
+    Args:
+        lower_num (int): The lower bound for random numbers
+        upper_num (int): The upper bound for random numbers
 
     Returns:
-        tuple: A tuple containing two random integers between 1 and 100.
+        tuple: A tuple containing two random integers between lower_num and upper_num.
     """
     num_one = random.randint(lower_num, upper_num)
     num_two = random.randint(lower_num, upper_num)
@@ -138,17 +142,44 @@ def main():
     """Run the math quiz game.
 
     The game will:
-    1. Present 10 random math questions
-    2. Accept and validate user input
-    3. Check answers and keep score
-    4. Display the final score
+    1. Ask for difficulty level
+    2. Present 10 random math questions
+    3. Accept and validate user input
+    4. Check answers and keep score
+    5. Display the final score
     """
     print("Welcome to the Math Quiz!")
-    print("You will be asked 10 math questions to solve")
+    print("Choose your difficulty level:")
+    print("1. Easy (numbers 0-20)")
+    print("2. Medium (numbers 0-50)")
+    print("3. Hard (numbers 0-1000)")
+
+    while True:
+        try:
+            choice = int(input("Enter your choice (1-3): "))
+            if choice in [1, 2, 3]:
+                break
+            print("Please enter a number between 1 and 3")
+        except ValueError:
+            print("Invalid input. Please enter a number between 1 and 3")
+
+    difficulty_map = {1: 'easy', 2: 'medium', 3: 'hard'}
+    difficulty = difficulty_map[choice]
+    lower_num, upper_num = get_num_range(difficulty)
+
+    print(
+        f"\nYou will be asked 10 math questions with numbers between {lower_num} and {upper_num}")
     score = 0
     for i in range(10):
         print(f"\nQuestion {i + 1}:")
-        question_info = create_question()
+        operation = pick_operation()
+        num_one, num_two = pick_numbers(lower_num, upper_num)
+
+        if operation == '/':
+            while not valid_division(num_one, num_two):
+                num_one, num_two = pick_numbers(lower_num, upper_num)
+
+        question_info = [num_one, num_two, operation]
         question = display_question(question_info)
         correct_answer = get_right_answer(question_info)
 

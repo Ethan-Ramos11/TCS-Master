@@ -1,13 +1,33 @@
 import random
 
 
-def pick_numbers():
-    """Generate two random numbers between 1 and 100.
+def get_num_range(difficulty):
+    """Get the number range based on difficulty level.
+
+    Args:
+        difficulty (str): The difficulty level ('easy', 'medium', or 'hard')
 
     Returns:
-        tuple: A tuple containing two random integers between 1 and 100.
+        tuple: A tuple containing (lower_bound, upper_bound) for the number range
     """
-    # TODO: Generate and return two random numbers between 1 and 100
+    # TODO: Return appropriate number ranges based on difficulty
+    # Easy: 0-20
+    # Medium: 0-50
+    # Hard: 0-1000
+    pass
+
+
+def pick_numbers(lower_num, upper_num):
+    """Generate two random numbers between the specified range.
+
+    Args:
+        lower_num (int): The lower bound for random numbers
+        upper_num (int): The upper bound for random numbers
+
+    Returns:
+        tuple: A tuple containing two random integers between lower_num and upper_num
+    """
+    # TODO: Generate and return two random numbers between lower_num and upper_num
     pass
 
 
@@ -108,12 +128,18 @@ def main():
     """Run the math quiz game.
 
     The game will:
-    1. Present 10 random math questions
-    2. Accept and validate user input
-    3. Check answers and keep score
-    4. Display the final score
+    1. Ask for difficulty level
+    2. Present 10 random math questions
+    3. Accept and validate user input
+    4. Check answers and keep score
+    5. Display the final score
     """
     # TODO: Implement the main game loop
+    # 1. Ask user to choose difficulty (easy, medium, hard)
+    # 2. Get the number range based on difficulty
+    # 3. Generate and present questions using the appropriate number range
+    # 4. Keep track of score
+    # 5. Display final score
     pass
 
 

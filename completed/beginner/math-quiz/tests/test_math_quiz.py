@@ -5,7 +5,8 @@ from math_quiz import (
     create_question,
     display_question,
     check_answer,
-    get_right_answer
+    get_right_answer,
+    get_num_range
 )
 import unittest
 from unittest.mock import patch
@@ -18,14 +19,42 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 class TestMathQuiz(unittest.TestCase):
+    def test_get_num_range(self):
+        """Test that get_num_range returns correct ranges for each difficulty"""
+        # Test easy difficulty
+        lower, upper = get_num_range('easy')
+        self.assertEqual(lower, 0)
+        self.assertEqual(upper, 20)
+
+        # Test medium difficulty
+        lower, upper = get_num_range('medium')
+        self.assertEqual(lower, 0)
+        self.assertEqual(upper, 50)
+
+        # Test hard difficulty
+        lower, upper = get_num_range('hard')
+        self.assertEqual(lower, 0)
+        self.assertEqual(upper, 1000)
+
+        # Test invalid difficulty
+        result = get_num_range('invalid')
+        self.assertEqual(result, -1)
+
     def test_pick_numbers(self):
-        """Test that pick_numbers returns two numbers between 1 and 100"""
-        for _ in range(100):  # Test multiple times due to randomness
-            num_one, num_two = pick_numbers()
-            self.assertGreaterEqual(num_one, 1)
-            self.assertLessEqual(num_one, 100)
-            self.assertGreaterEqual(num_two, 1)
-            self.assertLessEqual(num_two, 100)
+        """Test that pick_numbers returns two numbers within the specified range"""
+        test_ranges = [
+            (0, 20),   # Easy
+            (0, 50),   # Medium
+            (0, 1000)  # Hard
+        ]
+
+        for lower, upper in test_ranges:
+            for _ in range(50):  # Test multiple times due to randomness
+                num_one, num_two = pick_numbers(lower, upper)
+                self.assertGreaterEqual(num_one, lower)
+                self.assertLessEqual(num_one, upper)
+                self.assertGreaterEqual(num_two, lower)
+                self.assertLessEqual(num_two, upper)
 
     def test_pick_operation(self):
         """Test that pick_operation returns a valid operation"""
@@ -93,11 +122,48 @@ class TestMathQuiz(unittest.TestCase):
             ([5, 3, '+'], 8),
             ([10, 2, '-'], 8),
             ([4, 6, '*'], 24),
-            ([20, 5, '/'], 4)
+            ([20, 5, '/'], 4),
+            ([0, 5, '+'], 5),    # Test with zero
+            ([10, 0, '+'], 10),  # Test with zero
+            ([100, 50, '-'], 50)  # Test with larger numbers
         ]
 
         for question_info, expected in test_cases:
             self.assertEqual(get_right_answer(question_info), expected)
+
+    @patch('builtins.input')
+    def test_main_with_difficulty(self, mock_input):
+        """Test the main function with different difficulty levels"""
+        # Test easy difficulty
+        mock_input.side_effect = ['1', '5']  # Choose easy difficulty, answer 5
+        with patch('sys.stdout') as mock_stdout:
+            from math_quiz import main
+            main()
+            output = mock_stdout.getvalue()
+            self.assertIn('Easy (numbers 0-20)', output)
+
+        # Test medium difficulty
+        # Choose medium difficulty, answer 5
+        mock_input.side_effect = ['2', '5']
+        with patch('sys.stdout') as mock_stdout:
+            main()
+            output = mock_stdout.getvalue()
+            self.assertIn('Medium (numbers 0-50)', output)
+
+        # Test hard difficulty
+        mock_input.side_effect = ['3', '5']  # Choose hard difficulty, answer 5
+        with patch('sys.stdout') as mock_stdout:
+            main()
+            output = mock_stdout.getvalue()
+            self.assertIn('Hard (numbers 0-1000)', output)
+
+        # Test invalid input
+        # Invalid input, then easy, then answer 5
+        mock_input.side_effect = ['4', '1', '5']
+        with patch('sys.stdout') as mock_stdout:
+            main()
+            output = mock_stdout.getvalue()
+            self.assertIn('Please enter a number between 1 and 3', output)
 
 
 if __name__ == '__main__':
