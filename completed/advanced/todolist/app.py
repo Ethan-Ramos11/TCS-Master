@@ -14,7 +14,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todos.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Use environment variable for secret key, with fallback for development
 app.config['SECRET_KEY'] = os.environ.get(
-    'FLASK_SECRET_KEY', '773832982050328944a33ea3b759d96d832757b8124f675d27bfa8bd021f6167')
+    'FLASK_SECRET_KEY')
 
 # Initialize extensions
 db.init_app(app)
