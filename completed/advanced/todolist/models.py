@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from sqlalchemy import CheckConstraint
 
 db = SQLAlchemy()
 
@@ -38,10 +39,15 @@ class Task(db.Model):
     name = db.Column('name', db.String(100), nullable=False)
     description = db.Column('description', db.Text)
     due_date = db.Column('due_date', db.DateTime)
-    completed = db.Column('completed', db.Text,
-                          check_constraint="completed IN ('completed', 'incomplete')")
-    priority = db.Column('priority', db.String(
-        10), check_constraint="priority IN ('high', 'medium','low')")
+    completed = db.Column('completed', db.String(10), default='incomplete')
+    priority = db.Column('priority', db.String(10), default='medium')
+
+    __table_args__ = (
+        CheckConstraint(completed.in_(
+            ['completed', 'incomplete']), name='check_completed'),
+        CheckConstraint(priority.in_(
+            ['high', 'medium', 'low']), name='check_priority'),
+    )
 
     def to_dict(self):
         return {

@@ -10,11 +10,10 @@ import os
 app = Flask(__name__)
 
 # Configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todos.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# Use environment variable for secret key, with fallback for development
-app.config['SECRET_KEY'] = os.environ.get(
-    'FLASK_SECRET_KEY')
+# Use environment variable for secret key
+app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY')
 
 # Initialize extensions
 db.init_app(app)
@@ -47,4 +46,4 @@ def index():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    app.run(debug=True, port=5001)

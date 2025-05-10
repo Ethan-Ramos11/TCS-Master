@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from ..models import db, Task
+from models import db, Task
 from sqlalchemy import or_
 
 tasks = Blueprint('tasks', __name__)
