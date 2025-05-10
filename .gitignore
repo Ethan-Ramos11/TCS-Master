@@ -47,3 +47,5 @@ ENV/
 
 # Student Work
 work-in-progress/
+
+.env
