@@ -14,13 +14,13 @@ def calculate(num1, num2, operation):
         ValueError: If operation is not supported
         ZeroDivisionError: If attempting to divide by zero
     """
-    if operation == '+':
+    if operation == "+":
         return num1 + num2
-    elif operation == '-':
+    elif operation == "-":
         return num1 - num2
-    elif operation == '*':
+    elif operation == "*":
         return num1 * num2
-    elif operation == '/':
+    elif operation == "/":
         return num1 / num2
     else:
         raise ValueError(f"Unsupported operation: {operation}")
@@ -39,10 +39,10 @@ def get_user_input():
     try:
         num1 = float(input("Enter first number: "))
         operation = input("Choose operation (+, -, *, /): ").strip()
-        if operation not in {'+', '-', '*', '/'}:
+        if operation not in {"+", "-", "*", "/"}:
             raise ValueError("Invalid operation")
         num2 = float(input("Enter second number: "))
-        if operation == '/' and num2 == 0:
+        if operation == "/" and num2 == 0:
             raise ZeroDivisionError("Cannot divide by zero")
         return num1, num2, operation
     except ValueError as e:
@@ -59,7 +59,7 @@ def main():
             num1, num2, operation = get_user_input()
             result = calculate(num1, num2, operation)
             print(f"{num1} {operation} {num2} = {result}")
-            if input("\nCalculate again? (y/n): ").lower() != 'y':
+            if input("\nCalculate again? (y/n): ").lower() != "y":
                 break
         except ValueError as e:
             print(f"Error: {e}")

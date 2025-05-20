@@ -58,8 +58,9 @@ class TestIndexCardSet(unittest.TestCase):
 
         # Clean up
         import os
+
         os.remove(filename)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

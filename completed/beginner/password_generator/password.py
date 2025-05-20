@@ -40,8 +40,7 @@ def get_input(modifier):
         str: 'y' if the character type should be included, 'n' if not
     """
     while True:
-        ans = input(
-            f"Do you need to include {modifier}? (y/n) ").strip().lower()
+        ans = input(f"Do you need to include {modifier}? (y/n) ").strip().lower()
         if ans in ["y", "n"]:
             return ans
         print("Invalid entry try again")
@@ -122,7 +121,8 @@ def main():
             while True:
                 try:
                     num_char = int(
-                        input("\nHow many characters should the password have? "))
+                        input("\nHow many characters should the password have? ")
+                    )
                     if not enough_chars(num_char, mods):
                         print("Password length must be at least 4 characters.")
                         continue
@@ -134,7 +134,7 @@ def main():
         print("\nGenerated Password:", password)
         print("-" * 50)
 
-        if input("\nGenerate another password? (y/n): ").lower() != 'y':
+        if input("\nGenerate another password? (y/n): ").lower() != "y":
             print("\nThank you for using the Password Generator!")
             break
 

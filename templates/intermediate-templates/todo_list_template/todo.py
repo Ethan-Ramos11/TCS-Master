@@ -216,7 +216,7 @@ class Todolist:
         # TODO: Implement loading from file
         pass
 
-    def sort_tasks(self, by='priority'):
+    def sort_tasks(self, by="priority"):
         """
         Sort tasks by criteria.
 

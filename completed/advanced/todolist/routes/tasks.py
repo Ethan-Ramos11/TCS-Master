@@ -5,12 +5,11 @@ from flask_limiter.util import get_remote_address
 from models import db, Task
 from sqlalchemy import or_
 
-tasks = Blueprint('tasks', __name__)
+tasks = Blueprint("tasks", __name__)
 
 # Initialize the limiter
 limiter = Limiter(
-    key_func=get_remote_address,
-    default_limits=["200 per day", "50 per hour"]
+    key_func=get_remote_address, default_limits=["200 per day", "50 per hour"]
 )
 
 # Apply rate limits to all routes
@@ -21,7 +20,7 @@ def before_request():
     limiter.check()
 
 
-@tasks.route('/tasks', methods=['GET'])
+@tasks.route("/tasks", methods=["GET"])
 @login_required
 @limiter.limit("10 per minute")
 def get_tasks():
@@ -34,13 +33,12 @@ def get_tasks():
       429: Too many requests
     """
     tasks = Task.query.filter_by(user_id=current_user.user_id).all()
-    return jsonify({
-        'message': 'Tasks found for user',
-        'data': [task.to_dict() for task in tasks]
-    })
+    return jsonify(
+        {"message": "Tasks found for user", "data": [task.to_dict() for task in tasks]}
+    )
 
 
-@tasks.route('/tasks/<int:task_id>', methods=['GET'])
+@tasks.route("/tasks/<int:task_id>", methods=["GET"])
 @login_required
 @limiter.limit("20 per minute")
 def get_task(task_id):
@@ -58,19 +56,16 @@ def get_task(task_id):
       404: Task not found
       429: Too many requests
     """
-    task = Task.query.filter_by(
-        task_id=task_id, user_id=current_user.user_id).first()
+    task = Task.query.filter_by(task_id=task_id, user_id=current_user.user_id).first()
     if not task:
-        return jsonify({'error': 'Task not found'}), 404
-    return jsonify({
-        'message': 'Task found',
-        'data': task.to_dict()
-    })
+        return jsonify({"error": "Task not found"}), 404
+    return jsonify({"message": "Task found", "data": task.to_dict()})
+
 
 # Create a new task
 
 
-@tasks.route('/tasks', methods=['POST'])
+@tasks.route("/tasks", methods=["POST"])
 @login_required
 @limiter.limit("5 per minute")
 def create_task():
@@ -100,26 +95,28 @@ def create_task():
     due_date = data.get("due_date")
     priority = data.get("priority")
     if not name:
-        return jsonify({'error': 'expected a name'})
+        return jsonify({"error": "expected a name"})
 
     new_task = Task(
         name=name,
         user_id=current_user.user_id,
         description=description,
         due_date=due_date,
-        priority=priority
+        priority=priority,
     )
     db.session.add(new_task)
     db.session.commit()
 
-    return jsonify({
-        'message': 'Task successfully added',
-        'data': new_task.to_dict()
-    }), 201
+    return (
+        jsonify({"message": "Task successfully added", "data": new_task.to_dict()}),
+        201,
+    )
+
+
 # Update an existing task
 
 
-@tasks.route('/tasks/<int:task_id>', methods=['PUT'])
+@tasks.route("/tasks/<int:task_id>", methods=["PUT"])
 @login_required
 @limiter.limit("10 per minute")
 def update_task(task_id):
@@ -147,29 +144,27 @@ def update_task(task_id):
       404: Task not found
       429: Too many requests
     """
-    task = Task.query.filter_by(
-        task_id=task_id, user_id=current_user.user_id).first()
+    task = Task.query.filter_by(task_id=task_id, user_id=current_user.user_id).first()
     if not task:
-        return jsonify({'error': 'Task not found'}), 404
+        return jsonify({"error": "Task not found"}), 404
 
     data = request.get_json()
     if not data:
-        return jsonify({'error': 'No update data provided'}), 404
+        return jsonify({"error": "No update data provided"}), 404
 
-    allowed_fields = ['name', 'description', 'due_date', 'priority']
+    allowed_fields = ["name", "description", "due_date", "priority"]
     for field in allowed_fields:
         if field in data:
             setattr(task, field, data[field])
 
     db.session.commit()
-    return jsonify({
-        'message': 'Task updated successfully',
-        'data': task.to_dict()
-    })
+    return jsonify({"message": "Task updated successfully", "data": task.to_dict()})
+
+
 # Delete a task
 
 
-@tasks.route('/tasks/<int:task_id>', methods=['DELETE'])
+@tasks.route("/tasks/<int:task_id>", methods=["DELETE"])
 @login_required
 @limiter.limit("5 per minute")
 def delete_task(task_id):
@@ -187,22 +182,18 @@ def delete_task(task_id):
       404: Task not found
       429: Too many requests
     """
-    task = Task.query.filter_by(
-        task_id=task_id,
-        user_id=current_user.user_id
-    ).first()
+    task = Task.query.filter_by(task_id=task_id, user_id=current_user.user_id).first()
     if not task:
-        return jsonify({'error': 'Task not found'}), 404
+        return jsonify({"error": "Task not found"}), 404
     db.session.delete(task)
     db.session.commit()
-    return jsonify({
-        'message': 'Task deleted successfully'
-    })
+    return jsonify({"message": "Task deleted successfully"})
+
 
 # Mark task as complete/incomplete
 
 
-@tasks.route('/tasks/<int:task_id>/toggle', methods=['POST'])
+@tasks.route("/tasks/<int:task_id>/toggle", methods=["POST"])
 @login_required
 @limiter.limit("20 per minute")
 def toggle_task(task_id):
@@ -220,23 +211,20 @@ def toggle_task(task_id):
       404: Task not found
       429: Too many requests
     """
-    task = Task.query.filter_by(
-        task_id=task_id,
-        user_id=current_user.user_id
-    ).first()
+    task = Task.query.filter_by(task_id=task_id, user_id=current_user.user_id).first()
     if not task:
-        return jsonify({'error': 'Task not found'}), 404
+        return jsonify({"error": "Task not found"}), 404
     task.flip_completed()
     db.session.commit()
-    return jsonify({
-        'message': 'Task completion status updated',
-        'data': task.to_dict()
-    })
+    return jsonify(
+        {"message": "Task completion status updated", "data": task.to_dict()}
+    )
+
 
 # Filter tasks by priority
 
 
-@tasks.route('/tasks/priority/<string:priority>', methods=['GET'])
+@tasks.route("/tasks/priority/<string:priority>", methods=["GET"])
 @login_required
 @limiter.limit("10 per minute")
 def get_tasks_by_priority(priority):
@@ -254,19 +242,19 @@ def get_tasks_by_priority(priority):
       401: Not authenticated
       429: Too many requests
     """
-    tasks = Task.query.filter_by(
-        priority=priority,
-        user_id=current_user.user_id
-    ).all()
-    return jsonify({
-        'message': f'Tasks with priority {priority} found',
-        'data': [task.to_dict() for task in tasks]
-    })
+    tasks = Task.query.filter_by(priority=priority, user_id=current_user.user_id).all()
+    return jsonify(
+        {
+            "message": f"Tasks with priority {priority} found",
+            "data": [task.to_dict() for task in tasks],
+        }
+    )
+
 
 # Get tasks due before a specific date
 
 
-@tasks.route('/tasks/due/<string:date>', methods=['GET'])
+@tasks.route("/tasks/due/<string:date>", methods=["GET"])
 @login_required
 @limiter.limit("10 per minute")
 def get_tasks_by_due_date(date):
@@ -287,20 +275,21 @@ def get_tasks_by_due_date(date):
     """
     try:
         tasks = Task.query.filter(
-            Task.due_date < date,
-            Task.user_id == current_user.user_id
+            Task.due_date < date, Task.user_id == current_user.user_id
         ).all()
-        return jsonify({
-            'message': f'Tasks due by {date}',
-            'data': [task.to_dict() for task in tasks]
-        })
+        return jsonify(
+            {
+                "message": f"Tasks due by {date}",
+                "data": [task.to_dict() for task in tasks],
+            }
+        )
     except Exception as e:
-        return jsonify({'error': 'Invalid date format or database error'}), 400
+        return jsonify({"error": "Invalid date format or database error"}), 400
 
     # Search tasks by name or description
 
 
-@tasks.route('/tasks/search', methods=['GET'])
+@tasks.route("/tasks/search", methods=["GET"])
 @login_required
 @limiter.limit("10 per minute")
 def search_tasks():
@@ -318,28 +307,28 @@ def search_tasks():
       401: Not authenticated
       429: Too many requests
     """
-    search_term = request.args.get('q', '')
+    search_term = request.args.get("q", "")
     if not search_term:
-        return jsonify({'error': 'Search term is required'}), 400
+        return jsonify({"error": "Search term is required"}), 400
 
     tasks = Task.query.filter(
         Task.user_id == current_user.user_id,
         or_(
-            Task.name.ilike(f'%{search_term}%'),
-            Task.description.ilike(f'%{search_term}%')
-        )
+            Task.name.ilike(f"%{search_term}%"),
+            Task.description.ilike(f"%{search_term}%"),
+        ),
     ).all()
-    return jsonify({
-        'message': 'Tasks retrieved',
-        'data': [task.to_dict() for task in tasks]})
+    return jsonify(
+        {"message": "Tasks retrieved", "data": [task.to_dict() for task in tasks]}
+    )
 
     # Get tasks sorted by different criteria
 
 
-@tasks.route('/tasks/sorted/<string:sort_by>', methods=['GET'])
+@tasks.route("/tasks/sorted/<string:sort_by>", methods=["GET"])
 @login_required
 @limiter.limit("10 per minute")
-def get_sorted_tasks(sort_by='date'):
+def get_sorted_tasks(sort_by="date"):
     """
     Get tasks sorted by field.
     ---
@@ -355,17 +344,20 @@ def get_sorted_tasks(sort_by='date'):
       429: Too many requests
     """
     sort_fields = {
-        'date': Task.due_date,
-        'priority': Task.priority,
-        'name': Task.name,
-        'completed': Task.completed
+        "date": Task.due_date,
+        "priority": Task.priority,
+        "name": Task.name,
+        "completed": Task.completed,
     }
 
     sort_field = sort_fields.get(sort_by, Task.due_date)
 
-    tasks = Task.query.filter_by(
-        user_id=current_user.user_id).order_by(sort_field).all()
-    return jsonify({
-        'message': f'Tasks sorted by {sort_field}',
-        'data': [task.to_dict() for task in tasks]
-    })
+    tasks = (
+        Task.query.filter_by(user_id=current_user.user_id).order_by(sort_field).all()
+    )
+    return jsonify(
+        {
+            "message": f"Tasks sorted by {sort_field}",
+            "data": [task.to_dict() for task in tasks],
+        }
+    )

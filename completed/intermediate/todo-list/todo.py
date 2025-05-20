@@ -6,7 +6,7 @@ import uuid
 
 class Task:
     def __init__(self, description, id=None, priority=None, due_date=None):
-        pattern = r'^\d{2}/\d{2}/\d{2}$'
+        pattern = r"^\d{2}/\d{2}/\d{2}$"
 
         self.description = description
         if priority != None and priority.lower() in ["high", "medium", "low"]:
@@ -38,7 +38,7 @@ class Task:
         return True
 
     def update_due_date(self, new_date):
-        pattern = r'^\d{2}/\d{2}/\d{2}$'
+        pattern = r"^\d{2}/\d{2}/\d{2}$"
 
         if self.due_date == new_date:
             print("Please enter a different date")
@@ -57,14 +57,15 @@ class Task:
             "description": self.description,
             "due_date": self.due_date,
             "priority": self.priority,
-            "completed": self.completed
+            "completed": self.completed,
         }
         return info
 
     @classmethod
     def from_dict(cls, data):
-        new_task = cls(data["description"], data["id"],
-                       data["priority"], data["due_date"])
+        new_task = cls(
+            data["description"], data["id"], data["priority"], data["due_date"]
+        )
         return new_task
 
 
@@ -106,8 +107,9 @@ class Todolist:
             due_date = task.due_date if task.due_date else "None"
             status = "✅ Complete" if task.completed else "⬜ Incomplete"
 
-            max_length = max(len(description), len(priority),
-                             len(due_date), len(status)) + 2
+            max_length = (
+                max(len(description), len(priority), len(due_date), len(status)) + 2
+            )
             box_width = max_length + 4  # Add padding for borders
 
             top_border = "┌" + "─" * (box_width - 2) + "┐"
@@ -169,8 +171,10 @@ class Todolist:
 
     def save_to_file(self, filename):
         try:
-            data = {"list_name": self.list_name,
-                    "tasks": [task.to_dict() for task in self.tasks]}
+            data = {
+                "list_name": self.list_name,
+                "tasks": [task.to_dict() for task in self.tasks],
+            }
             with open(filename, "w") as file:
                 json.dump(data, file)
             return True
@@ -202,18 +206,24 @@ class Todolist:
             print("Invalid JSON format")
             return None
 
-    def sort_tasks(self, by='priority'):
-        if by == 'priority':
+    def sort_tasks(self, by="priority"):
+        if by == "priority":
             priority_order = {"high": 0, "medium": 1, "low": 2, "None": 3}
-            self.tasks.sort(key=lambda task: priority_order.get(
-                task.priority if task.priority else "None", 3))
-        elif by == 'due_date':
-            self.tasks.sort(key=lambda task:
-                            (task.due_date is None,
-                             task.due_date if task.due_date else ''))
-        elif by == 'completion':
+            self.tasks.sort(
+                key=lambda task: priority_order.get(
+                    task.priority if task.priority else "None", 3
+                )
+            )
+        elif by == "due_date":
+            self.tasks.sort(
+                key=lambda task: (
+                    task.due_date is None,
+                    task.due_date if task.due_date else "",
+                )
+            )
+        elif by == "completion":
             self.tasks.sort(key=lambda task: task.completed)
-        elif by == 'description':
+        elif by == "description":
             self.tasks.sort(key=lambda task: task.description)
         else:
             print(f"Invalid entry for sort: {by}")
@@ -245,19 +255,13 @@ class Todolist:
                 stats["Without due date"] += 1
         stats["priority breakdown"] = self.get_tasks_by_priority()
         if stats["Total tasks"] > 0:
-            stats["completion rate"] = stats["Completed"] / \
-                stats["Total tasks"] * 100
+            stats["completion rate"] = stats["Completed"] / stats["Total tasks"] * 100
         else:
             stats["completion rate"] = 0
         return stats
 
     def get_tasks_by_priority(self):
-        task_priorities = {
-            "high": 0,
-            "medium": 0,
-            "low": 0,
-            "None": 0
-        }
+        task_priorities = {"high": 0, "medium": 0, "low": 0, "None": 0}
         for task in self.tasks:
             if task.priority == None:
                 task_priorities["None"] += 1
@@ -316,12 +320,9 @@ def main():
             else:
                 for task in results:
                     print(f"\nTask: {task.description}")
-                    print(
-                        f"Priority: {task.priority if task.priority else 'None'}")
-                    print(
-                        f"Due Date: {task.due_date if task.due_date else 'None'}")
-                    print(
-                        f"Status: {'Complete' if task.completed else 'Incomplete'}")
+                    print(f"Priority: {task.priority if task.priority else 'None'}")
+                    print(f"Due Date: {task.due_date if task.due_date else 'None'}")
+                    print(f"Status: {'Complete' if task.completed else 'Incomplete'}")
 
         elif choice == "4":
             print("\nFilter by:")
@@ -331,8 +332,7 @@ def main():
             filter_choice = input("Enter your choice (1-3): ")
 
             if filter_choice == "1":
-                priority = input(
-                    "Enter priority (high/medium/low/none): ").lower()
+                priority = input("Enter priority (high/medium/low/none): ").lower()
                 if priority not in ["high", "medium", "low", "none"]:
                     print("Invalid priority.")
                     continue
@@ -341,8 +341,7 @@ def main():
                 due_date = input("Enter due date (mm/dd/yy): ")
                 filtered = todo_list.filter_tasks(due_date=due_date)
             elif filter_choice == "3":
-                completed = input(
-                    "Show completed tasks? (y/n): ").lower() == "y"
+                completed = input("Show completed tasks? (y/n): ").lower() == "y"
                 filtered = todo_list.filter_tasks(completed=completed)
             else:
                 print("Invalid choice.")
@@ -353,12 +352,9 @@ def main():
             else:
                 for task in filtered:
                     print(f"\nTask: {task.description}")
-                    print(
-                        f"Priority: {task.priority if task.priority else 'None'}")
-                    print(
-                        f"Due Date: {task.due_date if task.due_date else 'None'}")
-                    print(
-                        f"Status: {'Complete' if task.completed else 'Incomplete'}")
+                    print(f"Priority: {task.priority if task.priority else 'None'}")
+                    print(f"Due Date: {task.due_date if task.due_date else 'None'}")
+                    print(f"Status: {'Complete' if task.completed else 'Incomplete'}")
 
         elif choice == "5":
             print("\nSort by:")
@@ -397,7 +393,8 @@ def main():
 
             if update_choice == "1":
                 new_priority = input(
-                    "Enter new priority (high/medium/low/none): ").lower()
+                    "Enter new priority (high/medium/low/none): "
+                ).lower()
                 if todo_list.update_task_priority(task_id, new_priority):
                     print("Priority updated successfully!")
                 else:
@@ -426,7 +423,7 @@ def main():
             print(f"Without due date: {stats['Without due date']}")
             print(f"Completion rate: {stats['completion rate']:.2f}%")
             print("\nPriority breakdown:")
-            for priority, count in stats['priority breakdown'].items():
+            for priority, count in stats["priority breakdown"].items():
                 print(f"{priority}: {count}")
 
         elif choice == "8":

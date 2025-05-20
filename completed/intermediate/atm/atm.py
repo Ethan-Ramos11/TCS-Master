@@ -129,10 +129,8 @@ class ATM:
         self.balance -= amount
         recipient_account.balance += amount
 
-        self.transaction_history.append(
-            f"Transferred ${amount:.2f} to account")
-        recipient_account.transaction_history.append(
-            f"Received ${amount:.2f} transfer")
+        self.transaction_history.append(f"Transferred ${amount:.2f} to account")
+        recipient_account.transaction_history.append(f"Received ${amount:.2f} transfer")
 
         print(f"Transferred ${amount:.2f}. New balance: ${self.balance:.2f}")
         return True
@@ -188,7 +186,7 @@ def get_amount(transaction):
     Args:
         str: The transaction the user is about to make
 
-    Returns: 
+    Returns:
         float: The amount for the transaction
     """
     while True:
@@ -215,10 +213,13 @@ def main():
     atm = ATM()
     print("Hello this is a fully functioning atm system written in python")
     print("Select an operation and then enter the amount made with that operation")
-    print("To withdraw enter w, to deposit enter d, to transfer enter t, to view transactions enter view, to change pin enter change, or to quit enter q")
+    print(
+        "To withdraw enter w, to deposit enter d, to transfer enter t, to view transactions enter view, to change pin enter change, or to quit enter q"
+    )
     while True:
         choice = input(
-            "To withdraw enter w, to deposit enter d, to transfer enter t, to view transactions enter view, to change pin enter change, or to quit enter q").lower()
+            "To withdraw enter w, to deposit enter d, to transfer enter t, to view transactions enter view, to change pin enter change, or to quit enter q"
+        ).lower()
         if choice == "w":
             pass
 

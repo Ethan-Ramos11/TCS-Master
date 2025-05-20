@@ -10,8 +10,7 @@ def get_player_choice():
     """
     choice = ""
     while choice.lower() not in {"r", "p", "s"}:
-        choice = input(
-            "Enter your choice r for rock, p for paper, or s for scissors")
+        choice = input("Enter your choice r for rock, p for paper, or s for scissors")
     return choice
 
 
@@ -64,7 +63,8 @@ def display_stats(stats):
         stats (dict): Current game statistics
     """
     print(
-        f"Wins: {stats["player"]}, Losses: {stats["computer"]}, Draws: {stats["tie"]}")
+        f"Wins: {stats["player"]}, Losses: {stats["computer"]}, Draws: {stats["tie"]}"
+    )
 
 
 def main():
@@ -72,9 +72,7 @@ def main():
     Main function to run the game.
     Handles the game loop and player interaction.
     """
-    stats = {"player": 0,
-             "computer": 0,
-             "tie": 0}
+    stats = {"player": 0, "computer": 0, "tie": 0}
     print("\nWelcome to Rock, Paper, Scissors!")
     print("Enter your choice: 'r', 'p', or 's'")
     print("Type 'quit' at any time to exit the game\n")

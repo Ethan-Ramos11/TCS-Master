@@ -38,7 +38,7 @@ class TestPasswordGenerator(unittest.TestCase):
         # self.assertTrue(any(c.isupper() for c in password))
         pass
 
-    @patch('builtins.input')
+    @patch("builtins.input")
     def test_get_input(self, mock_input):
         """
         Test the get_input function to ensure it:
@@ -55,5 +55,5 @@ class TestPasswordGenerator(unittest.TestCase):
         pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

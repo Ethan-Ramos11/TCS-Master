@@ -8,20 +8,15 @@ class TestPasswordGenerator(unittest.TestCase):
         # Test cases for enough_chars function
         test_cases = [
             # All modifiers, sufficient length
-            (4, {"uppercase": "y", "numbers": "y",
-             "special characters": "y"}, True),
+            (4, {"uppercase": "y", "numbers": "y", "special characters": "y"}, True),
             # All modifiers, insufficient length
-            (3, {"uppercase": "y", "numbers": "y",
-             "special characters": "y"}, False),
+            (3, {"uppercase": "y", "numbers": "y", "special characters": "y"}, False),
             # One modifier, sufficient length
-            (2, {"uppercase": "y", "numbers": "n",
-             "special characters": "n"}, True),
+            (2, {"uppercase": "y", "numbers": "n", "special characters": "n"}, True),
             # One modifier, insufficient length
-            (1, {"uppercase": "y", "numbers": "n",
-             "special characters": "n"}, False),
+            (1, {"uppercase": "y", "numbers": "n", "special characters": "n"}, False),
             # No modifiers, sufficient length
-            (5, {"uppercase": "n", "numbers": "n",
-             "special characters": "n"}, True),
+            (5, {"uppercase": "n", "numbers": "n", "special characters": "n"}, True),
         ]
 
         for num_chars, modifiers, expected in test_cases:
@@ -51,12 +46,13 @@ class TestPasswordGenerator(unittest.TestCase):
                     self.assertTrue(any(c.isdigit() for c in password))
                 if modifiers["special characters"] == "y":
                     self.assertTrue(
-                        any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?" for c in password))
+                        any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?" for c in password)
+                    )
 
                 # Always check for lowercase
                 self.assertTrue(any(c.islower() for c in password))
 
-    @patch('builtins.input', side_effect=['y', 'n', 'invalid', 'y'])
+    @patch("builtins.input", side_effect=["y", "n", "invalid", "y"])
     def test_get_input(self, mock_input):
         # Test get_input function with valid and invalid inputs
         result = get_input("uppercase letters")
@@ -70,5 +66,5 @@ class TestPasswordGenerator(unittest.TestCase):
         self.assertEqual(result, "y")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

@@ -4,7 +4,7 @@ from number_guessing_game import (
     generate_secret_number,
     get_user_guess,
     check_guess,
-    main
+    main,
 )
 
 
@@ -74,5 +74,5 @@ class TestNumberGuessingGame(unittest.TestCase):
         pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

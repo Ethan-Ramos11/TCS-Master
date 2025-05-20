@@ -4,7 +4,7 @@ from number_guessing_game import (
     generate_secret_number,
     get_user_guess,
     check_guess,
-    main
+    main,
 )
 
 
@@ -18,11 +18,11 @@ class TestNumberGuessingGame(unittest.TestCase):
 
         # Create a list of test guesses
         self.test_guesses = {
-            'correct': 42,
-            'too_high': 50,
-            'too_low': 30,
-            'invalid': 'not a number',
-            'out_of_range': 150
+            "correct": 42,
+            "too_high": 50,
+            "too_low": 30,
+            "invalid": "not a number",
+            "out_of_range": 150,
         }
 
     def test_generate_secret_number(self):
@@ -36,7 +36,7 @@ class TestNumberGuessingGame(unittest.TestCase):
             self.assertGreaterEqual(number, 1)
             self.assertLessEqual(number, 100)
 
-    @patch('builtins.input')
+    @patch("builtins.input")
     def test_get_user_guess_valid_input(self, mock_input):
         """
         Test get_user_guess with valid input.
@@ -46,7 +46,7 @@ class TestNumberGuessingGame(unittest.TestCase):
         result = get_user_guess()
         self.assertEqual(result, 42)
 
-    @patch('builtins.input')
+    @patch("builtins.input")
     def test_get_user_guess_invalid_input(self, mock_input):
         """
         Test get_user_guess with invalid input.
@@ -60,27 +60,24 @@ class TestNumberGuessingGame(unittest.TestCase):
         """
         Test check_guess when guess is correct.
         """
-        result = check_guess(
-            self.test_guesses['correct'], self.test_secret_number)
+        result = check_guess(self.test_guesses["correct"], self.test_secret_number)
         self.assertTrue(result)
 
     def test_check_guess_too_high(self):
         """
         Test check_guess when guess is too high.
         """
-        result = check_guess(
-            self.test_guesses['too_high'], self.test_secret_number)
+        result = check_guess(self.test_guesses["too_high"], self.test_secret_number)
         self.assertFalse(result)
 
     def test_check_guess_too_low(self):
         """
         Test check_guess when guess is too low.
         """
-        result = check_guess(
-            self.test_guesses['too_low'], self.test_secret_number)
+        result = check_guess(self.test_guesses["too_low"], self.test_secret_number)
         self.assertFalse(result)
 
-    @patch('builtins.input')
+    @patch("builtins.input")
     def test_main_game_flow(self, mock_input):
         """
         Test the main game flow.
@@ -90,20 +87,21 @@ class TestNumberGuessingGame(unittest.TestCase):
             "50",  # too high
             "30",  # too low
             "42",  # correct
-            "n"    # don't play again
+            "n",  # don't play again
         ]
 
         # Mock print to capture output
-        with patch('builtins.print') as mock_print:
+        with patch("builtins.print") as mock_print:
             main()
 
             # Verify the game flow
             mock_print.assert_any_call("Your guess is too high")
             mock_print.assert_any_call("Your guess is too low")
             mock_print.assert_any_call(
-                "Congratulations! You guessed the correct number!")
+                "Congratulations! You guessed the correct number!"
+            )
             mock_print.assert_any_call("Hope you enjoyed playing goodbye!")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

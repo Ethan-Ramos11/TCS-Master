@@ -128,8 +128,7 @@ class TestTodolist(unittest.TestCase):
         loaded_list = Todolist.load_from_file(filename)
         self.assertIsNotNone(loaded_list)
         self.assertEqual(len(loaded_list.tasks), 3)
-        self.assertEqual(
-            loaded_list.tasks[0].description, self.task1.description)
+        self.assertEqual(loaded_list.tasks[0].description, self.task1.description)
 
         # Clean up
         os.remove(filename)

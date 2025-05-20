@@ -2,8 +2,15 @@ import random
 
 
 class Character:
-    def __init__(self, hp: int = 100, mana: int = 10, attack: int = 5,
-                 defense: int = 5, speed: int = 5, crit_chance: float = 0.5):
+    def __init__(
+        self,
+        hp: int = 100,
+        mana: int = 10,
+        attack: int = 5,
+        defense: int = 5,
+        speed: int = 5,
+        crit_chance: float = 0.5,
+    ):
         # Resource stats
         self.max_hp = hp
         self.hp = hp
@@ -12,10 +19,10 @@ class Character:
 
         # Combat stats
         self.stats = {
-            "attack":  attack,
+            "attack": attack,
             "defense": defense,
             "speed": speed,
-            "crit_chance": crit_chance
+            "crit_chance": crit_chance,
         }
 
         # Status and progression
@@ -27,11 +34,7 @@ class Character:
 
         # Equipment and inventory
         self.inventory = []
-        self.equipped_items = {
-            'weapon': None,
-            'armor': None,
-            'accessory': None
-        }
+        self.equipped_items = {"weapon": None, "armor": None, "accessory": None}
 
     # Combat Functions
     def take_damage(self, amount: int) -> bool:
@@ -60,7 +63,7 @@ class Character:
             self.hp += amount
             return amount
 
-    def attack(self, target: 'Character') -> int:
+    def attack(self, target: "Character") -> int:
         """TODO: Calculate damage based on attack stat, handle critical hits"""
         pass
 
@@ -107,19 +110,20 @@ class Character:
     def remove_status_effect(self, effect_name: str) -> None:
         if effect_name in self.status_effects:
             del self.status_effects[effect_name]
+
     # Equipment Management
 
-    def equip_item(self, item: 'Item') -> bool:
+    def equip_item(self, item: "Item") -> bool:
         if self.equipped_items[item.type] != None:
             self.unequip_item(item.type)
         self.equipped_items[item.type] = item
 
-    def unequip_item(self, slot: str) -> 'Item':
+    def unequip_item(self, slot: str) -> "Item":
         if self.equipped_items == "None":
             return
         self.equipped_items = None
 
-    def add_to_inventory(self, item: 'Item') -> bool:
+    def add_to_inventory(self, item: "Item") -> bool:
         if len(self.inventory) == 5:
             return False
         self.inventory.append(item)

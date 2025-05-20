@@ -15,8 +15,13 @@ class Index_Card:
 
             # Center the content
             padding = (card_width - len(content)) // 2
-            print("|" + " " * padding + content + " " *
-                  (card_width - padding - len(content)) + "|")
+            print(
+                "|"
+                + " " * padding
+                + content
+                + " " * (card_width - padding - len(content))
+                + "|"
+            )
 
             print("|" + " " * card_width + "|")
             print("+" + "-" * card_width + "+")
@@ -100,15 +105,9 @@ class Index_Card_Set:
 
     def upload_to_file(self, filename):
         try:
-            card_set_data = {
-                "set_name": self.set_name,
-                "cards": []
-            }
+            card_set_data = {"set_name": self.set_name, "cards": []}
             for card in self.cards:
-                card_data = {
-                    "name": card.name,
-                    "value": card.value
-                }
+                card_data = {"name": card.name, "value": card.value}
                 card_set_data["cards"].append(card_data)
 
             with open(filename, "w") as file:
@@ -142,7 +141,8 @@ def main():
 
     while True:
         choice = input(
-            "Do you want to (1) create a new set, (2) load existing one, or (3) exit? (1/2/3): ")
+            "Do you want to (1) create a new set, (2) load existing one, or (3) exit? (1/2/3): "
+        )
 
         if choice == "1":
             name = input("Enter the new set's name: ")

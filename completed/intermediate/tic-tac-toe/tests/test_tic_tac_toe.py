@@ -14,7 +14,7 @@ class TestTicTacToe(unittest.TestCase):
 
     def test_initial_board(self):
         """Test that the board is empty at the start."""
-        self.assertEqual(self.game.board, ['_'] * 9)
+        self.assertEqual(self.game.board, ["_"] * 9)
         self.assertEqual(self.game.current_player, "X")
         self.assertEqual(self.game.results, {"X": 0, "O": 0, "Tie": 0})
 
@@ -99,9 +99,9 @@ class TestTicTacToe(unittest.TestCase):
         self.game.reset_board()
 
         # Check board is empty and player is X
-        self.assertEqual(self.game.board, ['_'] * 9)
+        self.assertEqual(self.game.board, ["_"] * 9)
         self.assertEqual(self.game.current_player, "X")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

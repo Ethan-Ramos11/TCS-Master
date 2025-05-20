@@ -22,7 +22,7 @@ def get_api_key() -> tuple[str, str]:
         if not api_key or not url:
             raise EnvironmentError("Missing required environment variables")
 
-        return api_key, url
+        return url, api_key
     except Exception as e:
         raise EnvironmentError(f"Error retrieving environment variables: {e}")
 
@@ -42,7 +42,24 @@ def get_weather_data(city: str, api_key: str) -> Dict:
         requests.RequestException: If there's an error making the API request
         ValueError: If the city name is invalid or empty
     """
-    pass
+    if not city:
+        raise ValueError("Expected a city")
+    try:
+        url, api_key = get_api_key()
+        url += f"access_key={api_key}"
+        query_string = {"query": city}
+        response = requests.get(url, params=query_string)
+        info = response.json()
+        if not info.get("success", True):
+            error = info.get("error")
+            raise requests.RequestException(
+                f"API Error: {error.get('type')} - {error.get('info')}"
+            )
+        return info
+    except requests.RequestException as e:
+        raise e
+    except Exception as e:
+        raise requests.RequestException(f"Unexpected error: {e}")
 
 
 def parse_weather_data(weather_data: Dict) -> Dict:

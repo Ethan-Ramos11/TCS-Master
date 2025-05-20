@@ -5,7 +5,7 @@ from rps import (
     get_computer_choice,
     determine_winner,
     update_stats,
-    display_stats
+    display_stats,
 )
 
 
@@ -50,5 +50,5 @@ class TestRockPaperScissors(unittest.TestCase):
         pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

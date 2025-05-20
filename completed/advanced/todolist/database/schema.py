@@ -1,17 +1,15 @@
 SCHEMA = {
-    "users":
-    {
+    "users": {
         "columns": {
-            "user_id": 'INTEGER PRIMARY KEY',
-            "username": 'TEXT UNIQUE NOT NULL',
-            "email": 'TEXT UNIQUE NOT NULL',
-            "password": 'TEXT NOT NULL',
-            "first_name": 'TEXT',
-            "last_name": 'TEXT',
+            "user_id": "INTEGER PRIMARY KEY",
+            "username": "TEXT UNIQUE NOT NULL",
+            "email": "TEXT UNIQUE NOT NULL",
+            "password": "TEXT NOT NULL",
+            "first_name": "TEXT",
+            "last_name": "TEXT",
         }
     },
-    "tasks":
-    {
+    "tasks": {
         "columns": {
             "task_id": "INTEGER PRIMARY KEY",
             "user_id": "INTEGER",
@@ -19,11 +17,8 @@ SCHEMA = {
             "description": "TEXT",
             "due_date": "TIMESTAMP",
             "completed": "TEXT CHECK(completed IN ('incomplete', 'complete'))",
-            "priority": "TEXT CHECK(priority IN ('high', 'medium', 'low'))"
+            "priority": "TEXT CHECK(priority IN ('high', 'medium', 'low'))",
         },
-        "foreign_keys": {
-            "user_id": "users(user_id)"
-        }
-    }
-
+        "foreign_keys": {"user_id": "users(user_id)"},
+    },
 }

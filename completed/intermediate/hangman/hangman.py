@@ -24,7 +24,7 @@ def display_game(tries, word, prior_letters):
         prior_letters (list): List of previously guessed letters
     """
     stages = [  # final state: head, torso, both arms and legs
-                """
+        """
                    --------
                    |      |
                    |      O
@@ -33,8 +33,8 @@ def display_game(tries, word, prior_letters):
                    |     / \\
                    -
                  """,
-                # head, torso, both arms, and one leg
-                """
+        # head, torso, both arms, and one leg
+        """
                    --------
                    |      |
                    |      O
@@ -43,8 +43,8 @@ def display_game(tries, word, prior_letters):
                    |     / 
                    -
                  """,
-                # head, torso and both arms
-                """
+        # head, torso and both arms
+        """
                    --------
                    |      |
                    |      O
@@ -53,8 +53,8 @@ def display_game(tries, word, prior_letters):
                    |      
                    -
                  """,
-                # head, torso and one arm
-                """
+        # head, torso and one arm
+        """
                    --------
                    |      |
                    |      O
@@ -63,8 +63,8 @@ def display_game(tries, word, prior_letters):
                    |     
                    -
                  """,
-                # head and torso
-                """
+        # head and torso
+        """
                    --------
                    |      |
                    |      O
@@ -73,8 +73,8 @@ def display_game(tries, word, prior_letters):
                    |     
                    -
                  """,
-                # head
-                """
+        # head
+        """
                    --------
                    |      |
                    |      O
@@ -83,8 +83,8 @@ def display_game(tries, word, prior_letters):
                    |     
                    -
                  """,
-                # initial empty state
-                """
+        # initial empty state
+        """
                    --------
                    |      |
                    |    
@@ -92,7 +92,7 @@ def display_game(tries, word, prior_letters):
                    |      
                    |     
                    -
-                 """
+                 """,
     ]
     w = "Word: "
     prior = "Guessed letters: "
@@ -151,8 +151,7 @@ def get_user_input(word, prior_letters):
         tuple: (guess, is_word_guess) where guess is the user's input and is_word_guess is a boolean
     """
     while True:
-        check_word = input(
-            "Do you want to guess the whole word? (y/n) ").lower()
+        check_word = input("Do you want to guess the whole word? (y/n) ").lower()
         if check_word not in {"y", "n"}:
             print("Invalid response, please enter y or n")
             continue
@@ -209,7 +208,7 @@ def play():
     word_guessed = False
     while tries > 0 and not word_guessed:
         attempts += 1
-        print("\n" + "="*50)
+        print("\n" + "=" * 50)
         display_game(tries, working_word, prior_letters)
         guess, check_word = get_user_input(word, prior_letters)
         if check_word:
@@ -227,7 +226,7 @@ def play():
                 working_word = update_guess(working_word, guess, positions)
                 if "".join(working_word) == word:
                     word_guessed = True
-    print("\n" + "="*50)
+    print("\n" + "=" * 50)
     display_game(tries, word, prior_letters)
     if word_guessed:
         print(f"Good job you guessed the word {word} in {attempts} attempts")
