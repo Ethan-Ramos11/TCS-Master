@@ -56,20 +56,20 @@ def register():
 
     db.session.commit()
     return jsonify({
-#         'message': 'Registration successful',
-#         'user': {
-#             'id': new_user.user_id,
-#             'username': new_user.username,
-#             'email': new_user.email,
-#             'first_name': new_user.first_name,
-#             'last_name': new_user.last_name
-#         }
-#     }), 201
+        'message': 'Registration successful',
+        'user': {
+            'id': new_user.user_id,
+            'username': new_user.username,
+            'email': new_user.email,
+            'first_name': new_user.first_name,
+            'last_name': new_user.last_name
+        }
+    }), 201
 
 
-# @auth.route('/logout', methods=['POST'])
-# def logout():
-#     if not current_user.is_authenticated:
+@auth.route('/logout', methods=['POST'])
+def logout():
+    if not current_user.is_authenticated:
         return jsonify({'error': 'User not authenticated'}), 200
 
     logout_user()
