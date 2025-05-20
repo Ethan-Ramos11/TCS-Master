@@ -3,20 +3,28 @@ import os
 import requests
 from typing import Dict, Optional, Union
 
-load_dotenv()
 
-
-def get_api_key() -> str:
+def get_api_key() -> tuple[str, str]:
     """
-    Retrieves the API key from environment variables.
+    Retrieves the API key and URL from environment variables.
 
     Returns:
-        str: The API key for the weather service
+        tuple[str, str]: A tuple containing (api_key, url)
 
     Raises:
-        EnvironmentError: If the API key is not found in environment variables
+        EnvironmentError: If the API key or URL is not found in environment variables
     """
-    pass
+    try:
+        load_dotenv()
+        api_key = os.getenv("WEATHER_API_KEY")
+        url = os.getenv("WEATHER_URL")
+
+        if not api_key or not url:
+            raise EnvironmentError("Missing required environment variables")
+
+        return api_key, url
+    except Exception as e:
+        raise EnvironmentError(f"Error retrieving environment variables: {e}")
 
 
 def get_weather_data(city: str, api_key: str) -> Dict:
