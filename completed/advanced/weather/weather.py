@@ -77,7 +77,18 @@ def parse_weather_data(weather_data: Dict) -> Dict:
             - weather description
             - timestamp
     """
-    pass
+
+    current = weather_data.get("current", {})
+    location = weather_data.get("location", {})
+
+    info = {
+        "timestamp": location.get("localtime", "N/A"),
+        "temperature": current.get("temperature", "N/A"),
+        "humidity": current.get("humidity", "N/A"),
+        "wind_speed": current.get("wind_speed", "N/A"),
+        "weather_descriptions": current.get("weather_descriptions", ["N/A"])
+    }
+    return info
 
 
 def display_weather(parsed_data: Dict) -> None:
