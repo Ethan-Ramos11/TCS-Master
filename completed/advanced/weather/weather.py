@@ -156,7 +156,7 @@ def get_forecast(city: str, api_key: str, unit: str, days: int = 5) -> Dict:
     except requests.RequestException as e:
         raise e
     except Exception as e:
-        raise requests.RequestException(f"Unexpected error: {e} ")
+        raise requests.RequestException(f"Unexpected error: {e}")
 
 
 def main() -> None:
