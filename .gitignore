@@ -51,4 +51,12 @@ work-in-progress/
 
 # Ignore all .env files recursively
 **/.env
+**/.env.*
+**/env
+**/env.*
+**/.envrc
 *.env
+.env
+.env.*
+env
+.envrc
