@@ -47,3 +47,8 @@ ENV/
 
 # Student Work
 work-in-progress/
+.env
+
+# Ignore all .env files recursively
+**/.env
+*.env
