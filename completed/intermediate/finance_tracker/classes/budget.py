@@ -63,3 +63,17 @@ class Budget:
             return False
         self.time_frame = new_timeframe
         return True
+
+    def get_remaining(self) -> int:
+        return self.max_amount - self.curr_amount
+
+    def get_total(self) -> int:
+        total = 0
+        for t in self.transactions:
+            total += t.amount
+        return total
+
+    def get_percentage(self) -> int:
+        return self.curr_amount // self.max_amount
+    
+    
