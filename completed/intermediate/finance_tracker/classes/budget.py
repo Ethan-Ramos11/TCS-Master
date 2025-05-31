@@ -1,4 +1,11 @@
 from .transactions import Transactions
+from enum import Enum
+
+
+class BudgetStatus(Enum):
+    Over = 1
+    Exact = 0
+    Under = -1
 
 
 class Budget:
@@ -11,14 +18,20 @@ class Budget:
 
     def add_transaction(self, transaction: Transactions):
         self.transactions.append(transaction)
-        self.current_amount -= transaction.amount
+        self.curr_amount += transaction.amount
 
     def remove_transaction(self, transaction: Transactions) -> bool:
         if transaction in self.transactions:
             self.transactions.remove(transaction)
-            self.curr_amount += transaction.amount
+            self.curr_amount -= transaction.amount
             return True
         else:
             return False
-        
-    
+
+    def check_budget(self) -> int:
+        if self.curr_amount > self.max_amount:
+            return BudgetStatus.Over
+        elif self.curr_amount == self.max_amount:
+            return BudgetStatus.Exact
+        else:
+            return BudgetStatus.Under
