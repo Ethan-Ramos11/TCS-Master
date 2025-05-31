@@ -8,8 +8,14 @@ class BudgetStatus(Enum):
     Under = -1
 
 
+class TimeFrameStatus(Enum):
+    Week = 7
+    Month = 30
+    Year = 365
+
+
 class Budget:
-    def __init__(self, name: str, max_amount: int, curr_amount: int, time_frame: str):
+    def __init__(self, name: str, max_amount: int, curr_amount: int, time_frame: TimeFrameStatus):
         self.name = name
         self.max_amount = max_amount
         self.curr_amount = curr_amount
@@ -35,3 +41,25 @@ class Budget:
             return BudgetStatus.Exact
         else:
             return BudgetStatus.Under
+
+    def reset_budget(self):
+        self.transactions = []
+        self.curr_amount = 0
+
+    def update_name(self, new_name) -> bool:
+        if new_name == self.name:
+            return False
+        self.name = new_name
+        return True
+
+    def update_max(self, new_max) -> bool:
+        if new_max == self.max_amount:
+            return False
+        self.max_amount = new_max
+        return True
+
+    def update_time_frame(self, new_timeframe: TimeFrameStatus) -> bool:
+        if self.time_frame == new_timeframe:
+            return False
+        self.time_frame = new_timeframe
+        return True
