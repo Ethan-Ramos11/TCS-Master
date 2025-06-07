@@ -18,7 +18,7 @@ class Car:
 
     def speed_up(self):
         if self.gas_left > 0:
-            self.speed += random.randint(5, 15)
+            self.speed += random.randint(30, 50)
             self.gas_left -= 1
             self.distance_traveled += self.speed * 0.1
             print(f"Speeding up! Speed: {self.speed} mph")
@@ -83,7 +83,7 @@ class RandomCarSimulator:
             self.running = False
             return
 
-        if self.car.distance_traveled > 20 and random.random() < 0.2:
+        if self.car.distance_traveled > 20 and random.random() < 0.6:
             self.car.reached_home = True
             self.outcome = "Made it home safely"
             self.running = False
@@ -129,3 +129,22 @@ def main():
         ("Porsche", "GT3RS"),
         ("Ford", "Mustang")
     ]
+    make, model = random.choice(cars)
+    year = random.randint(2015, 2024)
+    max_gas = random.randint(12, 20)
+
+    car = Car(make, model, year, max_gas)
+    car.display_stats()
+
+    simulator = RandomCarSimulator(car)
+
+    input("\nPress enter to start the random simulation...")
+
+    simulator.run_simulation()
+
+    print("\nFinal car status:")
+    car.display_stats()
+
+
+if __name__ == "__main__":
+    main()
