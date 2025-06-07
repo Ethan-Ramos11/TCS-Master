@@ -53,3 +53,24 @@ class Car:
         print(f"   Speed: {self.speed} mph")
         print(f"   Gas: {self.gas_left}/{self.max_gas} gallons")
         print(f"   Distance: {self.distance_traveled:.2f} miles")
+
+
+class RandomCarSimulator:
+    def __init__(self, car: Car):
+        self.car = car
+        self.running = False
+        self.outcome = None
+
+    def random_action(self):
+        actions = [
+            self.car.speed_up,
+            lambda: self.car.slow_down(random.randint(5, 20)),
+            self.car.brake_fully,
+            self.car.reverse,
+            lambda: self.car.gas_up(random.randint(1, 5))
+        ]
+        action = random.choice(actions)
+        action()
+
+        self.check_for_events()
+    
