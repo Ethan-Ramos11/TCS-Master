@@ -73,4 +73,59 @@ class RandomCarSimulator:
         action()
 
         self.check_for_events()
-    
+
+    def check_for_events(self):
+        crash_chance = max(0, (self.car.speed - 20) * 0.02)
+
+        if random.random() < crash_chance:
+            self.car.crashed = True
+            self.outcome = "CRASH! You were going too fast!"
+            self.running = False
+            return
+
+        if self.car.distance_traveled > 20 and random.random() < 0.2:
+            self.car.reached_home = True
+            self.outcome = "Made it home safely"
+            self.running = False
+            return
+
+        if self.car.gas_left == 0 and self.car.speed == 0:
+            self.outcome = "Ran out of gas and am stuck"
+            self.running = False
+            return
+
+    def run_simulation(self, duration=15):
+        print(f"\nStarting {duration}-second random car simulation")
+        print("=" * 50)
+
+        self.running = True
+        start_time = time.time()
+
+        while self.running and (time.time() - start_time) < duration:
+            self.random_action()
+            self.car.display_stats()
+
+            if not self.running:
+                break
+
+            time.sleep(1)
+        if self.running:
+            self.outcome = "Time's up! Nothing interesting happened"
+
+        print("\n" + "=" * 50)
+        print(f"Simulation ended: {self.outcome}")
+        print("=" * 50)
+
+
+def main():
+    print("Welcome to the random car simulator")
+    print("=" * 50)
+
+    cars = [
+        ("Toyota", "Camry"),
+        ("Toyota", "Corolla"),
+        ("Honda", "Civic"),
+        ("BMW", "M3"),
+        ("Porsche", "GT3RS"),
+        ("Ford", "Mustang")
+    ]
